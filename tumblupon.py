@@ -17,6 +17,9 @@ def index():
 def test():
     return render_template('test.html')
 
+@app.route('/test2')
+def test2():
+    return render_template('test2.html')
 
 @app.route('/api/v1/tags/<tag>/')
 def get_tag(tag):
