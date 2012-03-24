@@ -17,13 +17,16 @@ def index():
 def test():
     return render_template('test.html')
 
+@app.route('/test01')
+def test01():
+    return render_template('test01.html')
+
 @app.route('/test2')
 def test2():
     return render_template('test2.html')
 
 def get_tumblr_tag(tag):
     return api(TUMBLR, 'tagged', api_key=API_KEY, tag=tag)['response']
-
 
 @app.route('/api/v1/tags/<tag>/')
 def tag(tag):
