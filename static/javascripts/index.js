@@ -4,22 +4,17 @@ $(document).ready(function() {
     url:'/api/v1/popular'
   }).done(function(response) {
     response = $.parseJSON(response);
-    console.log('pre-each loop');
     $.each(response, function(index, post) {
       processPost(index, post);
+      console.log(response);
     });
-    console.log(response);
-    console.log(response.length);
+    $("#container").isotope({
+      itemSelector : '.post',
+      layoutMode : 'fitRows'
+    });
   });
-  
-  var processPost= function(index, post) {
+  var processPost = function(index, post) {
     var url = post.post_url;
-    $('#container').append('<div class="element"><a href="'+url+'">'+url+'</a></div>');
+    $('#container').append('<div class="post"><a href="'+url+'">'+url+'</a></div>');
   }
-
-  /*$('#container').isotope({
-    itemSelector : '.element',
-    layoutMode : 'fitRows'
-  });
-  */
 });
