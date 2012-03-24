@@ -14,9 +14,24 @@ def index():
     return render_template('index.html')
 
 
+def get_tumblr_tag(tag):
+    return api(TUMBLR, 'tagged', api_key=API_KEY, tag=tag)['response']
+
+
 @app.route('/api/v1/tags/<tag>/')
-def get_tag(tag):
-    return json.dumps(api(TUMBLR, api_key=API_KEY, tag=tag))
+def tag(tag):
+    return json.dumps(get_tumblr_tag(tag))
+
+
+POPULAR = ['LOL', 'Fashion', 'GIFS', 'Vintage', 'Landscape']
+
+
+@app.route('/api/v1/popular/')
+def popular():
+    responses = []
+    for tag in POPULAR:
+        responses.extend(get_tumblr_tag(tag))
+    return json.dumps(responses)
 
 
 if __name__ == '__main__':
