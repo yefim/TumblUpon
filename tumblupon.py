@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, render_template
-from utils import api
+from utils import api, thread_map
 app = Flask(__name__)
 
 
@@ -36,8 +36,8 @@ POPULAR = ['LOL', 'Fashion', 'GIFS', 'Vintage', 'Landscape']
 @app.route('/api/v1/popular/')
 def popular():
     responses = []
-    for tag in POPULAR:
-        responses.extend(get_tumblr_tag(tag))
+    for response in thread_map(get_tumblr_tag, POPULAR):
+        responses.extend(response)
     return json.dumps(responses)
 
 
