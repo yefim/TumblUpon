@@ -13,6 +13,13 @@ API_KEY = 'wnsr7xgJJz7Dpjcm0S9YNWe1UbJHc4oGwVYUhtvkykcPK678rA'
 def index():
     return render_template('index.html')
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+@app.route('/test2')
+def test2():
+    return render_template('test2.html')
 
 def get_tumblr_tag(tag):
     return api(TUMBLR, 'tagged', api_key=API_KEY, tag=tag)['response']
