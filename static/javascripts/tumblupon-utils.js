@@ -79,3 +79,50 @@ function make_datestamp (timestamp) {
     var d = new Date(timestamp);
     return UTILS.months[d.getMonth()] + " " + d.getDate();
 }
+
+var populate = function (offset) {
+  var $container = $("#container");
+  $.ajax({
+    type: 'GET',
+    url:'/api/v1/popular/?offset=' + 20 * offset
+  }).done(function(response) {
+    response = $.parseJSON(response);
+    $.each(response, function(index, post) {
+      $post = $(render_entry(post));
+      $container.isotope('insert', $post);
+      //$('#container').append(render_entry(post));
+      console.log(post);
+      $post.click(function() {
+        var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
+        window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
+      });
+    });
+    setTimeout(function () { scrollLimit += 1; }, 5000);
+  });
+
+}
+
+var scrolls = 0;
+var scrollLimit = 1;
+
+var scroll = function () {
+    var contentHeight = 800;
+    var clientHeight = document.documentElement.clientHeight;
+    var scrollPosition;
+    var scrollTrigger = 10;
+    if (navigator.appName == "Microsoft Internet Explorer") {
+        scrollPosition = document.documentElement.scrollTop;
+    } else {
+        scrollPosition = window.pageYOffset;
+    }
+    console.log(clientHeight + scrollPosition + scrollTrigger + " " + $(document).height());
+    if (clientHeight + scrollPosition + scrollTrigger > $(document).height()) {
+        console.log("Trigger" + " " + scrolls + " " + scrollLimit);
+        if (scrolls < scrollLimit) {
+            scrolls += 1;
+            console.log("Scrolls" + scrolls + " " + scrollLimit);
+            console.log("populating...");
+            populate(scrolls);
+        }
+    }
+}

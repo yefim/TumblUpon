@@ -76,8 +76,8 @@ def index():
 def test01():
     return render_template('test01.html')
 
-def get_tumblr_tag(tag):
-    return api(TUMBLR, 'tagged', api_key=API_KEY, tag=tag)['response']
+def get_tumblr_tag(tag, offset=0):
+    return api(TUMBLR, 'tagged', offset=offset, api_key=API_KEY, tag=tag)['response']
 
 
 # API
@@ -102,7 +102,13 @@ POPULAR = ['Fashion']
 @app.route('/api/v1/popular/')
 def popular():
     responses = []
-    for response in thread_map(get_tumblr_tag, POPULAR):
+    try:
+        offset = request.args.get('offset', '')
+    except KeyError:
+        offset = 0
+    def get_data(tag):
+        return get_tumblr_tag(tag, offset=offset)
+    for response in thread_map(get_data, POPULAR):
         responses.extend(response)
     return json.dumps(responses)
 

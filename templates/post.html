@@ -1,5 +1,9 @@
-<div id="post">
-    <h1>{{ blog.title }}</h1>
-    <img src="{{ post.photos.0.alt_sizes.0.url }}"/>
-    {{ post.caption | safe }}
-</div>
+<html>
+    <body>
+        <div id="post">
+            <h1>{{ blog.title }}</h1>
+            <img src="{{ post.photos.0.alt_sizes.0.url }}"/>
+            {{ post.caption | safe }}
+        </div>
+    </body>
+</html>
