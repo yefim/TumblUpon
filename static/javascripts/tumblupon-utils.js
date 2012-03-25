@@ -146,7 +146,7 @@ var populate = function (offset) {
           );
       });
     });
-    setTimeout(function () { scrollLimit += 1; }, 5000);
+    //setTimeout(function () { scrollLimit += 1; }, 5000);
   });
 
 }
