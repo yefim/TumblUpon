@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $('.dialog').hide();
   var $container = $("#container");
 
   $container.isotope({
@@ -60,8 +61,13 @@ $(document).ready(function() {
                   "</div>";
       $post.click(function() {
         $('.dialog #content').html('HELLO THERE');
-        $('.dialog').css('visibility','visible');
-        var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
+        //$('.dialog').css('visibility','visible');
+        if ($('.dialog').is(':visible')) {
+          $('.dialog').show();
+        } else {
+          $('.dialog').hide();
+        }
+        //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       });
     });

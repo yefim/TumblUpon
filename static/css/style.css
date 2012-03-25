@@ -36,7 +36,6 @@ body {
   width: 400px;
 }
 .dialog {
-  visibility: hidden;
   position: absolute;
   left: 0px;
   top: 0px;
@@ -46,8 +45,9 @@ body {
   z-index: 1000;
 }
 .dialog div {
-  width: 300px;
+  width: 80%;
   margin: 100px auto;
+  opacity: 0.9;
   background-color: #fff;
   padding: 15px;
   text-align: center;
