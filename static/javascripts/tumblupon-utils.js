@@ -120,7 +120,6 @@ var populate = function (offset) {
     url:'/api/v1/popular/?offset=' + 20 * offset
   }).done(function(response) {
     response = $.parseJSON(response);
-    console.log(response);
     $.each(response, function(index, post) {
       var entry = render_entry(post);
       if (entry == null)
