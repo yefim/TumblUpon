@@ -48,7 +48,7 @@ $(document).ready(function() {
               caption_color: '#fff',
               caption_bgcolor: '#000',
               overlay_bgcolor: '#f9ca8d',
-              border: '', //'4px solid #000',
+              border: '1px dashed #000',
               showcaption: true
           });
       }
