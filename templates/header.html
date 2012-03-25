@@ -7,11 +7,10 @@
     <div class=navigation>
       {% if g.user %}
         <button class='btn' onclick="{{ url_for('logout') }}">logout [{{ g.user.username }}]</button>
-        <a class='btn' onclick="{{ url_for('logout') }}">logout [{{ g.user.username }}]</a>
-        <a href="{{ url_for('settings') }}">Settings</a>
+        <button class='btn' href="{{ url_for('settings') }}">Settings</button>
       {% else %}
-        <button class='btn btn-small' href="{{ url_for('register') }}">Register</button>
-        <button class='btn btn-small' href="{{ url_for('login') }}">Login</button>
+        <button class='btn' href="{{ url_for('register') }}">Register</button>
+        <button class='btn' href="{{ url_for('login') }}">Login</button>
       {% endif %}
   </div>
 </div>
