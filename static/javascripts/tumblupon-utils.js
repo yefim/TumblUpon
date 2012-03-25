@@ -6,10 +6,10 @@
 var UTILS = {
     months: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP',
         'OCT', 'NOV', 'DEC'],
-    MAX_WIDTH: 100,
+    MAX_WIDTH: 107,
     PHOTO_INDEX: 0,
     OPTIMAL_WIDTH: 350,
-    WIDTH_TOL = 10
+    WIDTH_TOL = 15
 };
 
 /* Renders a post entry via the following specifications:
@@ -116,21 +116,20 @@ var snip_text = function(string) {
      * First, look at result[UTILS.MAX_WIDTH]. If this character is a space, we
      * are done; cut the string off at that point. If not...
      *
-     * - Within a range of +WIDTH_TOL and -WIDTH_TOL, find the location of two
-     *   spaces closest to the 0 position.
-     * - If one space does not exist, we call substring up to the other space.
-     * - If no spaces exist, we cut off at the 0 position.
-     * - If both spaces exist, cut the string off at the closer of the two spaces.
+     * - Within a range from -WIDTH_TOL to MAX_WIDTH, find the last space.
+     * - If the space does not exist within the tolerance, then we cut off at
+     *   MAX_WIDTH.
+     * - Otherwise, we take the last occurring space.
      *
      * Don't question these rules. They're as random as a quantum bogosort.
-     *
-     * Note that a space could also be the end of the string.
      */
+    for (var i = 0; i < WIDTH_TOL; i += 1) {
+        if (result[UTILS.MAX_WIDTH - i] === ' ') {
+            return result.substring(0, UTILS.MAX_WIDTH - i) + "...";
+        }
+    }
 
-    if (result[UTILS.MAX_WIDTH] === ' ')
-        return result.substring(0, UTILS.MAX_WIDTH);
-
-    return result.substring(0, Math.min(UTILS.MAX_WIDTH, result.length)) + "...";
+    return result.substring(0, UTILS.MAX_WIDTH) + "...";
 }
 
 var make_datestamp = function(timestamp) {
