@@ -67,14 +67,15 @@ var processPhoto = function(photo, blog_name, timestamp) {
   
   html += "</div>";
   return html;*/
-  return "<div class='post photo ic_container' data-category='photo' data-timestamp='" + timestamp + "'>" +
-          "<div class='pic' style='height: " + height + "px;" + 
+  return "<div class='post photo' data-category='photo' data-timestamp='" + timestamp + "'>" +
+          "<div class='pic ic_container' style='height: " + height + "px;" + 
           "width: " + width + "px;" +
-          "background:url(" + url + ") no-repeat center center'></div>" +
+          "background:url(" + url + ") no-repeat center center'>" +
           "<div class='overlay' style='display:none;'></div>" +
           "<div class='ic_caption'>" +
-          "<p class='ic_text'>from: " + blog_name + "</p>" +
-          "</div></div>";
+          "<h3>from: &nbsp;&nbsp;" + blog_name + "</h3>" +
+          "<p class='ic_text'>" + make_datestamp(timestamp) + "</p>" +
+          "</div></div></div>";
 }
 
 var getOptimalPhoto = function(alt_sizes) {
