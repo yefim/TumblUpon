@@ -45,10 +45,10 @@ $(document).ready(function() {
       if ($post.hasClass('photo')) {
           console.log("has photo");
           $post.capslide({
-              caption_color: 'black',
-              caption_bgcolor: '#E6E79C',
-              overlay_bgcolor: '#E6E79C',
-              border: '',
+              caption_color: '#fff',
+              caption_bgcolor: '#000',
+              overlay_bgcolor: '#f9ca8d',
+              border: '', //'4px solid #000',
               showcaption: true
           });
       }
