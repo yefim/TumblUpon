@@ -54,9 +54,11 @@ var process_full_post = function(post) {
   for (i in tags) {
     text += "<div class='tag'>"+tags[i]+"</div>";
   }
+  text += "<div class='pics'>";
   for (j in photos) {
-    text += "<div class='pic'><img src='"+photos[j].alt_sizes[0].url+"'/>";
+    text += "<img src='"+photos[j].alt_sizes[0].url+"'/><br/>";
   }
+  text += "</div>";
   text += "</div>";
   return text;
 }
@@ -157,8 +159,6 @@ var populate = function (offset) {
               showcaption: true
           }); 
       }   
-
-      console.log(post);
       var text = process_full_post(post);
       $post.click(function() {
         $('.dialog #content').html(text);

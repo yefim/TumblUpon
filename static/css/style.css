@@ -1,6 +1,5 @@
 * {padding: 0; margin: 0 }
 body {
- background-color: #D0F2F7;
  font-family: 'Helvetica';
 }
 #container {
@@ -55,6 +54,9 @@ body {
   background-color: #fff;
   padding: 15px;
   font-size: 20pt;
+}
+.dialog .pics {
+  float: left;
 }
 
 /* jCapSlide CSS */
