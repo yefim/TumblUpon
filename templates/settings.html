@@ -19,7 +19,7 @@
     <header>
         <form id="add-form" class="row">
             <div class="span4">
-                <input id="tag" name="tag_name" type="text" required="true" value="{{ tag }}"/>
+                <input id="tag" placeholder='Add a tag and press Enter...' name="tag_name" type="text" required="true" value="{{ tag }}"/>
             </div>
             <div class="span4">
                 <input type="submit" id="add-button" class="btn btn-success" value="Add Tag">
@@ -42,5 +42,5 @@
     </div>
     {% endfor %}
 </div>
-  <div id='container'></div>
+<div id='container'></div>
 {% endblock %}
