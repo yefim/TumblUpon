@@ -8,7 +8,7 @@ var UTILS = {
         'OCT', 'NOV', 'DEC'],
     MAX_WIDTH: 107,
     PHOTO_INDEX: 0,
-    OPTIMAL_WIDTH: 350,
+    OPTIMAL_WIDTH: 250,
     WIDTH_TOL: 15
 };
 
