@@ -21,6 +21,9 @@ $(document).ready(function() {
     getSortData : {
         timestamp : function ($elem) {
           return parseInt($elem.attr('data-timestamp'));
+        },
+        name : function ($elem) {
+            return $elem.attr('data-name');
         }
     },
     sortBy : 'timestamp',
@@ -29,17 +32,25 @@ $(document).ready(function() {
 
   $("#sort-by a").click(function(e) {
       var sortName = $(this).attr('href').slice(1);
+      $container.isotope({ sortBy : sortName });;
+
+      e.preventDefault();
+      return true;
+  });
+  $("#sort-order button").click(function(e) {
+      var sortOrder = $(this).attr('href').slice(1);
       
-      if (sortName === 'newest') {
-          $container.isotope({ sortAscending : false });
-      }
-      if (sortName === 'oldest') {
+      if (sortOrder === "ascend") {
           $container.isotope({ sortAscending : true });
+      }
+      else if (sortOrder === "descend") {
+          $container.isotope({ sortAscending : false });
       }
 
       e.preventDefault();
       return true;
   });
+
   populate(0);
   // setInterval("scroll();", 1000);
 });

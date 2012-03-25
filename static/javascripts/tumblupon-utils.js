@@ -85,7 +85,7 @@ var processPhoto = function(photo, blog_name, timestamp) {
 
     // header div element
     var html = "<div class='post photo' data-category='photo' data-timestamp='" +
-        timestamp + "'>";
+        timestamp + "' data-name='" + blog_name + "'>";
 
     // div element that contains the picture
     html += "<div class='pic ic_container' style='height: " + height + "px;" + 
