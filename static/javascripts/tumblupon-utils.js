@@ -8,7 +8,8 @@ var UTILS = {
         'OCT', 'NOV', 'DEC'],
     MAX_WIDTH: 100,
     PHOTO_INDEX: 0,
-    ALT_SIZE_INDEX: 0
+    ALT_SIZE_INDEX: 0,
+    OPTIMAL_WIDTH: 350
 };
 
 /* Renders a post entry via the following specifications:
@@ -48,7 +49,7 @@ var render_entry = function(content_args) {
 }
 
 var processPhoto = function(photo, timestamp) {
-  var alt = photo.alt_sizes[UTILS.ALT_SIZE_INDEX];
+  var alt = getOptimalPhoto(photo.alt_sizes);
   var url = alt.url;
   var height = alt.height * 1.2;
   var width = alt.width * 1.2;
@@ -57,6 +58,16 @@ var processPhoto = function(photo, timestamp) {
         "width: " + width + "px;" +
         "background:url(" + url + ") no-repeat center center' " +
         "data-category='photo' data-timestamp='" + timestamp + "'></div>";
+}
+
+var getOptimalPhoto = function(alt_sizes) {
+    var i;
+    for (i = 0; i < alt_sizes.length; i += 1) {
+        if (alt_sizes[i].width <= UTILS.OPTIMAL_WIDTH)
+            return alt_sizes[i];
+    }
+
+    return null;
 }
 
 var snip_text = function(string) {
