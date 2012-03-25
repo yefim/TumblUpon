@@ -10,6 +10,13 @@ body {
 #main {
   margin: 0px auto;
 }
+#main .tag {
+  display: inline;
+}
+#main .row {
+display: inline;
+padding: 20px;
+}
 #logo {
   cursor: pointer;
   background-image: url(/static/img/logo.png);
@@ -49,6 +56,8 @@ body {
   padding: 10px;
   margin: 2px;
   background-color: #000;
+}
+.span4 {
 }
 .pic {
   cursor: pointer;

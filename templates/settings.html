@@ -3,7 +3,8 @@
     <script type="text/javascript" src="/static/javascripts/index.js"></script>
 <script type="text/javascript">
     var removeItem = function (e) {
-      var tag = $(e).parents('.row').children().first().children().text();
+      var tag = $(e).text();
+      //var tag = $(e).parents('.row').children().first().children().text();
       $.ajax({
         type: 'GET',
         url: '/tag/destroy/'+tag+'/'
@@ -24,17 +25,7 @@
         </form>
     </header>
     {% for tag in tags %}
-    <div class="row">
-        <div class="span4">
-            <span>{{ tag }}</span>
-        </div>
-        <div class="app-items-btns span4">
-            <a class="btn"
-                onclick="removeItem(this)">
-                <i class="icon-remove"></i>
-            </a>
-        </div>
-    </div>
+    <div class="row"><div class='tag' onclick="removeItem(this)"><a class='btn btn-danger'>{{ tag }}</a></div></div>
     {% endfor %}
 </div>
 <div id='container'></div>

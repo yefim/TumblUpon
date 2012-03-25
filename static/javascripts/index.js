@@ -76,7 +76,9 @@ $(document).ready(function() {
           type: 'GET',
           url: '/tag/create/'+tag+'/'
       }).done(function(response) {
-          $('#main').append('<div class="row"><div class="span4"><span>'+tag+'</span></div><div class="app-items-btns span4"><a class="btn"onclick="removeItem(this)"><i class="icon-remove"></i></a></div></div>');
+          //$('#main').append('<div class="row"><div class="span4"><span>'+tag+'</span></div><div class="app-items-btns span4"><a class="btn"onclick="removeItem(this)"><i class="icon-remove"></i></a></div></div>');
+    
+          $('#main').append('<div class="row"><div class="tag" onclick="removeItem(this)"><a class="btn btn-danger">'+tag+'</a></div></div>');
           $("#tag").val('');
           $.ajax({
             type: 'GET',
