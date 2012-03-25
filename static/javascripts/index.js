@@ -90,7 +90,7 @@ $(document).ready(function() {
                 return true;
               var $post = $(entry);
               
-              $('#container').isotope('insert', $post);
+              $container.isotope('insert', $post);
                
               if ($post.hasClass('photo')) {
                   $post.capslide({
