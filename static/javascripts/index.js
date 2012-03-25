@@ -61,4 +61,56 @@ $(document).ready(function() {
   });
 
   populate(0);
+  // setInterval("scroll();", 1000);
+
+  $("#add-form").submit(function(e) {
+      console.log("submit");
+      addItem();
+      e.preventDefault();
+      return true;
+  });
+
+  var addItem = function () {
+      var tag = $("#tag").val();
+      $.ajax({
+          type: 'GET',
+          url: '/tag/create/'+tag+'/'
+      }).done(function(response) {
+          $('#main').append('<div class="row"><div class="span4"><span>'+tag+'</span></div><div class="app-items-btns span4"><a class="btn"onclick="removeItem(this)"><i class="icon-remove"></i></a></div></div>');
+          $("#tag").val('');
+          $.ajax({
+            type: 'GET',
+            url:'/api/v1/tags/'+tag
+          }).done(function(response) {
+            response = $.parseJSON(response);
+            console.log(response);
+            $.each(response, function(index, post) {
+              var entry = render_entry(post, tag);
+              if (entry == null)
+                return true;
+              var $post = $(entry);
+              
+              $('#container').isotope('insert', $post);
+               
+              if ($post.hasClass('photo')) {
+                  $post.capslide({
+                      caption_color: '#fff',
+                      caption_bgcolor: '#000',
+                      overlay_bgcolor: '#444',
+                      border: '1px dashed #000',
+                      showcaption: true
+                  }); 
+              }
+              var url = post.post_url;
+              $post.bind('click', {url: url}, function(event) {
+                  window.open(
+                      event.data.url,
+                      '_blank'
+                 );
+              });
+            });
+          });
+      });
+  
+  }
 });
