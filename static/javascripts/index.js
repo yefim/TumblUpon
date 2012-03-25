@@ -1,5 +1,7 @@
 $(document).ready(function() {
-  $('.dialog').hide();
+  $('.dialog').hide().click(function() {
+      $(this).hide();
+  });
   var $container = $("#container");
 
   $container.isotope({
@@ -50,13 +52,9 @@ $(document).ready(function() {
                     "<div>Testing3</div>" +
                   "</div>";
       $post.click(function() {
-        $('.dialog #content').html('HELLO THERE');
+        $('.dialog #content').html(text);
         //$('.dialog').css('visibility','visible');
-        if ($('.dialog').is(':visible')) {
-          $('.dialog').show();
-        } else {
-          $('.dialog').hide();
-        }
+        $('.dialog').toggle();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       });
