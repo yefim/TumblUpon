@@ -6,7 +6,7 @@ $(document).ready(function() {
     window.location = '/';
   });
   $('.btn').click(function() {
-    window.location = $(this).attr('href');
+    //window.location = $(this).attr('href');
   });
   var $container = $("#container");
 
@@ -30,7 +30,7 @@ $(document).ready(function() {
     sortAscending : false
   });
 
-  $("#sort-by button").click(function(e) {
+  $("#sort-by a").click(function(e) {
       var sortName = $(this).attr('href').slice(1);
       $container.isotope({ sortBy : sortName });;
 
