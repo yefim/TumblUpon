@@ -2,6 +2,9 @@ $(document).ready(function() {
   $('.dialog').hide().click(function() {
       $(this).fadeOut();
   });
+  $('#logo img').click(function() {
+    window.location = '/';
+  });
   var $container = $("#container");
 
   $container.isotope({

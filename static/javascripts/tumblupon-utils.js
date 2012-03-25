@@ -9,7 +9,7 @@ var UTILS = {
     MAX_WIDTH: 107,
     PHOTO_INDEX: 0,
     OPTIMAL_WIDTH: 350,
-    WIDTH_TOL = 15
+    WIDTH_TOL: 15
 };
 
 /* Renders a post entry via the following specifications:
@@ -42,19 +42,24 @@ var render_entry = function(content_args) {
 }
 var process_full_post = function(post) {
   var blog_name = post.blog_name;
+  var post_url = post.post_url;
+  var blog_url = post_url.match("http://(.*)\/post\/.*")[1];
   var caption = post.caption;
   var timestamp = post.timestamp;
   var note_count = post.note_count;
   var photos = post.photos;
   var tags = post.tags;
-  var text = "<div class='blogname'>"+blog_name+"</div>";
+  var text = "<div class='blogname'>Posted by <a target='_blank' href='http://"+blog_url+"'>"+blog_name+"</a></div>";
   text += "<div class='note'>"+note_count+" notes</div>";
-  text += "<div class='date'>"+make_datestamp(timestamp)+"</div>";
-  text += "<div class='tags'>tags: " + tags.join(', ') + "</div>";
   text += "<div class='pics'>";
   for (j in photos) {
-    text += "<img src='"+photos[j].alt_sizes[0].url+"'/><br/>";
+    //text += "<div style='background:url("+photos[j].alt_sizes[0].url+") no-repeat center center'></div>";
+    text += "<a target='_blank' href='"+post_url+"'><img src='"+photos[j].alt_sizes[0].url+"'/></a>";
+    //text += "<div>"+photos[j].alt_sizes[0].url+"</div>";
   }
+  text += "</div>";
+  text += "<div class='date'>"+make_datestamp(timestamp)+"</div>";
+  text += "<div class='tags'>tags: " + tags.join(', ') + "</div>";
   text += "</div>";
   return text;
 }
@@ -64,7 +69,6 @@ var processPhoto = function(photo, blog_name, timestamp) {
     var url = alt.url;
     var height = alt.height;
     var width = alt.width;
-    console.log(height + ', ' + width);
 
     // header div element
     var html = "<div class='post photo' data-category='photo' data-timestamp='" +
@@ -119,7 +123,7 @@ var snip_text = function(string) {
      *
      * Don't question these rules. They're as random as a quantum bogosort.
      */
-    for (var i = 0; i < WIDTH_TOL; i += 1) {
+    for (var i = 0; i < UTILS.WIDTH_TOL; i += 1) {
         if (result[UTILS.MAX_WIDTH - i] === ' ') {
             return result.substring(0, UTILS.MAX_WIDTH - i) + "...";
         }
@@ -154,10 +158,13 @@ var populate = function (offset) {
               showcaption: true
           }); 
       }   
-      var text = process_full_post(post);
       $post.click(function() {
+        var text = process_full_post(post);
         console.log('clicked');
         $('.dialog #content').html(text);
+        $('.dialog').css('top',$('.dialog').offset().top);
+        //var l = $(document).width()/2 - $(text).width()/2;
+        //$('.dialog #content').css('left', l);
         //$('.dialog').css('visibility','visible');
         $('.dialog').fadeIn();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];

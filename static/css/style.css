@@ -5,6 +5,9 @@ body {
 #container {
   /* margin-top: 200px; */
 }
+#logo img {
+  cursor: pointer;
+}
 #header {
   /* position: fixed; */
   padding: 20px;
@@ -53,6 +56,7 @@ body {
   margin: 50px auto;
   padding: 50px;
   background-color: #D0F2F7;
+  z-index: 1001;
 }
 .dialog .tags {
   font-size: 16pt;
@@ -61,10 +65,14 @@ body {
   display: inline;
 }
 .dialog .note {
+  text-align: right;
   font-size: 14px;
 }
 .dialog .pics {
-  float: left;
+  /*float: left;*/
+}
+.dialog .pics img {
+  max-width: 100%;
 }
 
 /* jCapSlide CSS */
