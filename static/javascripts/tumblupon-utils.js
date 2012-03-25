@@ -138,7 +138,10 @@ var populate = function (offset) {
       }
       var url = post.post_url;
       $post.bind('click', {url: url}, function(event) {
-          window.location = event.data.url;
+          window.open(
+              event.data.url,
+              '_blank'
+          );
       });
     });
     setTimeout(function () { scrollLimit += 1; }, 5000);
