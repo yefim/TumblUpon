@@ -199,14 +199,13 @@ def delete_tag(tag):
     return redirect(url_for('index'))
 
 
-@app.route('/settings/', methods=['GET', 'POST'])
+@app.route('/settings/', methods=['GET'])
 def settings():
     if not g.user:
         return redirect(url_for('index'))
-    if request.method == 'POST':
-        return render_template('settings.html')
-    elif request.method == 'GET':
-        return render_template('settings.html', tags=tags)
+    user_id = session['user_id']
+    tags = get_user_tags(user_id)
+    return render_template('settings.html', tags=tags)
 
 
 # API
