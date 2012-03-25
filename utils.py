@@ -1,4 +1,5 @@
 import json
+import time
 import threading
 import urllib
 import urllib2
@@ -32,8 +33,8 @@ def thread_map(func, iterable):
     threads = []
     for item in iterable:
         thread = Mapper(func, item)
-        threads.append(thread)
         thread.start()
+        threads.append(thread)
 
     for thread in threads:
         thread.join()
