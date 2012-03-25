@@ -154,8 +154,8 @@ def register():
             error = 'The username is already taken'
         else:
             user_create(request.form['username'], request.form['email'], request.form['password'])
-            flash('You were successfully registered and can login now')
-            return redirect(url_for('login'))
+            authenticate(request.form['username'], request.form['password'])
+            return redirect(url_for('settings'))
     return render_template('register.html', error=error)
 
 
