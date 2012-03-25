@@ -11,9 +11,6 @@ $(document).ready(function() {
       duration: 750,
       easing: 'linear',
       queue: false
-            }).done(function(response) {
-                $(e).parents(".row").remove();
-            });
     },
     getSortData : {
         timestamp : function ($elem) {
@@ -59,11 +56,23 @@ $(document).ready(function() {
   populate(0);
   // setInterval("scroll();", 1000);
 
-  $("#tag").submit(function() {
+  $("#add-form").submit(function(e) {
+      console.log("submit");
       addItem();
+      e.preventDefault();
       return true;
   });
-  $("#add-button").click(function() {
-      addItem();
-      return true;
+
+  var addItem = function () {
+      var tag = $("#tag").val();
+      $.ajax({
+          type: 'GET',
+          url: '/tag/create/'+tag+'/'
+      }).done(function(response) {
+          $('#main').append('<div class="row"><div class="span4"><span>'+tag+'</span></div><div class="app-items-btns span4"><a class="btn"onclick="removeItem(this)"><i class="icon-remove"></i></a></div></div>');
+          $("#tag").val('');
+      });
+  
+  }
+
 });
