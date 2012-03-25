@@ -30,7 +30,7 @@ var render_entry = function(content_args) {
     if (content_args.type === "photo") {
         return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
                             content_args.blog_name,
-                            content_args.timestamp);
+                            content_args.timestamp, content_args.tag);
     } else {
         return null;
     }
@@ -40,14 +40,14 @@ var linkify = function(text, url) {
   return "<a href='"+url+"'>"+text+"</a>";
 }
 
-var processPhoto = function(photo, blog_name, timestamp) {
+var processPhoto = function(photo, blog_name, timestamp, tag) {
     var alt = getOptimalPhoto(photo.alt_sizes);
     var url = alt.url;
     var height = alt.height;
     var width = alt.width;
 
     // header div element
-    var html = "<div class='post photo' data-category='photo' data-timestamp='" +
+    var html = "<div class='post photo "+tag+"' data-category='photo' data-timestamp='" +
         timestamp + "' data-name='" + blog_name + "'>";
 
     // div element that contains the picture
@@ -120,6 +120,7 @@ var populate = function (offset) {
     url:'/api/v1/popular/?offset=' + 20 * offset
   }).done(function(response) {
     response = $.parseJSON(response);
+    console.log(response);
     $.each(response, function(index, post) {
       var entry = render_entry(post);
       if (entry == null)

@@ -3,7 +3,7 @@
     <div class=navigation>
       {% if g.user %}
         <a class='btn' href="{{ url_for('logout') }}">logout [{{ g.user.username }}]</a>
-        <a class='btn' href="{{ url_for('settings') }}">Settings</a>
+        <a id='settings' class='btn' href="{{ url_for('settings') }}">Settings</a>
       {% else %}
         <a class='btn' href="{{ url_for('register') }}">Register</a>
         <a class='btn' href="{{ url_for('login') }}">Login</a>
