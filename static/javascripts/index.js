@@ -34,6 +34,8 @@ $(document).ready(function() {
       e.preventDefault();
       return true;
   });
+  populate(0);
+  // setInterval("scroll();", 1000);
 
   $.ajax({
     type: 'GET',
