@@ -26,11 +26,11 @@ var UTILS = {
  * The content field contains either an image url if type="photo", or 
  * simple text if type="text".
  */
-var render_entry = function(content_args) {
+var render_entry = function(content_args, tag) {
     if (content_args.type === "photo") {
         return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
                             content_args.blog_name,
-                            content_args.timestamp);
+                            content_args.timestamp, tag);
     } else {
         return "";
     }
@@ -40,14 +40,14 @@ var linkify = function(text, url) {
   return "<a href='"+url+"'>"+text+"</a>";
 }
 
-var processPhoto = function(photo, blog_name, timestamp) {
+var processPhoto = function(photo, blog_name, timestamp, tag) {
     var alt = getOptimalPhoto(photo.alt_sizes);
     var url = alt.url;
     var height = alt.height;
     var width = alt.width;
 
     // header div element
-    var html = "<div class='post photo' data-category='photo' data-timestamp='" +
+    var html = "<div class='post photo "+tag+"' data-category='photo' data-timestamp='" +
         timestamp + "' data-name='" + blog_name + "'>";
 
     // div element that contains the picture
@@ -119,9 +119,10 @@ var populate = function (offset) {
     type: 'GET',
     url:'/api/v1/popular/?offset=' + 20 * offset
   }).done(function(response) {
+    var tags = ['funny', 'LOL']
     response = $.parseJSON(response);
     $.each(response, function(index, post) {
-      var entry = render_entry(post);
+      var entry = render_entry(post, tags[index]);
       if (entry == null)
         return true;
       var $post = $(entry);
