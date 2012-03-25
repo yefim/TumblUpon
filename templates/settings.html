@@ -1,48 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <script type="text/javascript">
-    var addItem = function () {
-    var tag = $("#tag").val();
-    $.ajax({
-      type: 'GET',
-      url: '/tag/create/'+tag+'/'
-    }).done(function(response) {
-      $("#tag").val('');
-      $('#main').append('<div class="row"><div class="span4"><span>'+tag+'</span></div><div class="app-items-btns span4"><a class="btn"onclick="removeItem(this)"><i class="icon-remove"></i></a></div></div>');
-      $.ajax({
-        type: 'GET',
-        url:'/api/v1/tags/'+tag
-      }).done(function(response) {
-        response = $.parseJSON(response);
-        console.log(response);
-        $.each(response, function(index, post) {
-          var entry = render_entry(post);
-          if (entry == null)
-            return true;
-          var $post = $(entry);
-          
-          $('#container').isotope('insert', $post);
-           
-          if ($post.hasClass('photo')) {
-              $post.capslide({
-                  caption_color: '#fff',
-                  caption_bgcolor: '#000',
-                  overlay_bgcolor: '#444',
-                  border: '1px dashed #000',
-                  showcaption: true
-              }); 
-          }
-          var url = post.post_url;
-          $post.bind('click', {url: url}, function(event) {
-              window.open(
-                  event.data.url,
-                  '_blank'
-             );
-          });
-        });
-      });
-    });
-    }
     var removeItem = function (e) {
       var tag = $(e).parents('.row').children().first().children().text();
       $.ajax({
@@ -58,16 +16,16 @@
 </script>
 <div id="main">
     <header>
-        <div class="row">
+        <form id="add-form" class="row">
             <div class="span4">
-                <input id="tag" name="tag_name" type="text" value="{{ tag }}"/>
+                <input id="tag" name="tag_name" type="text" required="true" value="{{ tag }}"/>
             </div>
             <div class="span4">
-                <a class="btn btn-success" href="javascript:addItem()">
-                    <i class="icon-plus icon-white"></i>Add Tag
-                </a>
+                <input type="submit" id="add-button" class="btn btn-success" value="Add Tag">
+                <!--<i class="icon-plus icon-white"></i>Add Tag-->
+                </input>
             </div>
-        </div>
+        </form>
     </header>
     {% for tag in tags %}
     <div class="row">
