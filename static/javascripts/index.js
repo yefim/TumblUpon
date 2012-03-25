@@ -43,7 +43,13 @@ $(document).ready(function() {
       $container.isotope('insert', $post);
       //$('#container').append(render_entry(post));
       console.log(post);
+      var text = "<div id='mosaic'>" +
+                    "<div>Testing1</div>" +
+                    "<div>Testing2</div>" +
+                    "<div>Testing3</div>" +
+                  "</div>";
       $post.click(function() {
+        $('.dialog #content').html('HELLO THERE');
         $('.dialog').css('visibility','visible');
         var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
