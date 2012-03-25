@@ -10,7 +10,7 @@
  *      blog_name:
  *      post_url:
  *      type:
- *      
+ *      photos: [ {original_size: { url: } } ]
  *      body:
  * }
  *
