@@ -1,25 +1,18 @@
 $(document).ready(function() {
+  $("#container").isotope({
+    itemSelector : '.post',
+    layoutMode : 'fitRows'
+  });
   $.ajax({
     type: 'GET',
     url:'/api/v1/popular'
   }).done(function(response) {
     response = $.parseJSON(response);
-    console.log('pre-each loop');
     $.each(response, function(index, post) {
-      processPost(index, post);
+      $post = $(render_entry(post));
+      $('#container').isotope('insert', $post);
+      //$('#container').append(render_entry(post));
+      console.log(response);
     });
-    console.log(response);
-    console.log(response.length);
   });
-  
-  var processPost= function(index, post) {
-    var url = post.post_url;
-    $('#container').append('<div class="element"><a href="'+url+'">'+url+'</a></div>');
-  }
-
-  /*$('#container').isotope({
-    itemSelector : '.element',
-    layoutMode : 'fitRows'
-  });
-  */
 });

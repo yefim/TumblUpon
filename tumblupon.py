@@ -71,87 +71,9 @@ def teardown_request(exception):
 def index():
     return render_template('index.html')
 
-@app.route('/test')
-def test():
-    return render_template('test.html')
-
 @app.route('/test01')
 def test01():
     return render_template('test01.html')
-
-@app.route('/test2')
-def test2():
-    return render_template('test2.html')
-
-# LOGIN
-
-def authenticate(username, password):
-    """Attempt to log the user in. Raises a ValueError on bad credentials."""
-    users = query_db('select * from user')
-    for user in users:
-        if user['username'] == username:
-            if check_password_hash(generate_password_hash(password), password):
-                session['logged_in'] = True
-                break
-            else:
-                print "bad password"
-                raise ValueError('Invalid password')
-    else:
-        raise ValueError('Invalid username')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        try:
-            authenticate(request.form['username'], request.form['password'])
-        except ValueError as e:
-            return render_template('login.html', error=str(e))
-        else:
-            flash('You were logged in')
-            return redirect(url_for('index'))
-    else:
-        return render_template('login.html')
-
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out')
-    return redirect(url_for('index'))
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    """Registers the user."""
-    if g.user:
-        return redirect(url_for('index'))
-    error = None
-    if request.method == 'POST':
-        if not request.form['username']:
-            error = 'You have to enter a username'
-        elif not request.form['email'] or \
-                 '@' not in request.form['email']:
-            error = 'You have to enter a valid email address'
-        elif not request.form['password']:
-            error = 'You have to enter a password'
-        elif request.form['password'] != request.form['password2']:
-            error = 'The two passwords do not match'
-        elif get_user_id(request.form['username']) is not None:
-            error = 'The username is already taken'
-        else:
-            g.db.execute('''insert into user (
-                username, email, pw_hash) values (?, ?, ?)''',
-                [request.form['username'], request.form['email'],
-                 generate_password_hash(request.form['password'])])
-            g.db.commit()
-            flash('You were successfully registered and can login now')
-            return redirect(url_for('login'))
-    return render_template('register.html', error=error)
-
-
-# API FUNCTIONS
-
 
 def get_tumblr_tag(tag):
     return api(TUMBLR, 'tagged', api_key=API_KEY, tag=tag)['response']
