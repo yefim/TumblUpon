@@ -25,18 +25,13 @@ var UTILS = {
  * The content field contains either an image url if type="photo", or 
  * simple text if type="text".
  */
-
 var render_entry = function(content_args) {
     // var str = ""; //"<a href='" + content_args.post_url + "'>";
     //var str += "<div class='post " + content_args.type + "'>";
     switch (content_args.type) {
         case "photo":
-            var photo = content_args.photos[UTILS.PHOTO_INDEX];
-            return "<div class='post photo' style='background:url(" + 
-                photo.alt_sizes[UTILS.ALT_SIZE_INDEX].url +
-                ") no-repeat center center' " +
-                "data-category='photo' " +
-                "data-timestamp='" + content_args.timestamp + "'></div>";
+            return processPhoto(content_args.photos[UTILS.PHOTO_INDEX], 
+                                content_args.timestamp);
         case "text":
             return "<div class='post text' data-category='text'" +
                 "data-timestamp='" + content_args.timestamp + "'><h1 class='snippet'>" +
@@ -52,7 +47,19 @@ var render_entry = function(content_args) {
 
 }
 
-snip_text = function(string) {
+var processPhoto = function(photo, timestamp) {
+  var alt = photo.alt_sizes[UTILS.ALT_SIZE_INDEX];
+  var url = alt.url;
+  var height = alt.height * 1.2;
+  var width = alt.width * 1.2;
+  console.log(height + ', ' + width);
+  return "<div class='post photo' style='height: " + height + "px;" + 
+        "width: " + width + "px;" +
+        "background:url(" + url + ") no-repeat center center' " +
+        "data-category='photo' data-timestamp='" + timestamp + "'></div>";
+}
+
+var snip_text = function(string) {
     var result = string.replace(/<(?:.|\n)*?>/gm, '');
     return result.substring(0, Math.min(UTILS.MAX_WIDTH, result.length)) + "...";
 }

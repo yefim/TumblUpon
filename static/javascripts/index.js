@@ -3,7 +3,7 @@ $(document).ready(function() {
 
   $container.isotope({
     itemSelector : '.post',
-    layoutMode : 'fitRows',
+    layoutMode : 'masonry',
     getSortData : {
         timestamp : function ($elem) {
             return parseInt($elem.attr('data-timestamp'));
@@ -37,7 +37,7 @@ $(document).ready(function() {
       $post.mosaic();
       $('#container').isotope('insert', $post);
       //$('#container').append(render_entry(post));
-      console.log(response);
+      console.log(post);
     });
   });
 });
