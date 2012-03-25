@@ -8,7 +8,7 @@ body {
 }
 #logo {
   cursor: pointer;
-  background-image: url(/static/images/logo.png);
+  background-image: url(/static/img/logo.png);
   display: block;
   height: 129px;
   width: 529px;
