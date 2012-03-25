@@ -14,8 +14,8 @@ body {
   cursor: pointer;
   background-image: url(/static/img/logo.png);
   display: block;
-  height: 129px;
-  width: 529px;
+  height: 122px;
+  width: 554px;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -39,6 +39,7 @@ body {
   left: 75%;
 }
 #wrapper {
+  padding-top: 20px;
   width: 90%;
   min-height:100%;
   position: relative;
