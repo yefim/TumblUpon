@@ -127,10 +127,10 @@ def user_create(username, email, password):
         username, email, pw_hash) values (?, ?, ?)''',
         [username, email, generate_password_hash(password)])
     user_id = get_user_id(username)
-    for tag in POPULAR:
-        g.db.execute('''insert into tag (
-            tag, user_id) values (?, ?)''',
-            [tag, user_id])
+    # for tag in POPULAR:
+    #    g.db.execute('''insert into tag (
+    #        tag, user_id) values (?, ?)''',
+    #        [tag, user_id])
     g.db.commit()
 
 

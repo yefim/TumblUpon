@@ -26,11 +26,11 @@ var UTILS = {
  * The content field contains either an image url if type="photo", or 
  * simple text if type="text".
  */
-var render_entry = function(content_args, tag) {
+var render_entry = function(content_args) {
     if (content_args.type === "photo") {
         return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
                             content_args.blog_name,
-                            content_args.timestamp, tag);
+                            content_args.timestamp, content_args.tag);
     } else {
         return "";
     }
@@ -119,10 +119,10 @@ var populate = function (offset) {
     type: 'GET',
     url:'/api/v1/popular/?offset=' + 20 * offset
   }).done(function(response) {
-    var tags = ['funny', 'LOL']
     response = $.parseJSON(response);
+    console.log(response);
     $.each(response, function(index, post) {
-      var entry = render_entry(post, tags[index]);
+      var entry = render_entry(post);
       if (entry == null)
         return true;
       var $post = $(entry);
