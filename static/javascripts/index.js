@@ -5,6 +5,9 @@ $(document).ready(function() {
   $('#logo img').click(function() {
     window.location = '/';
   });
+  $('.btn').click(function() {
+    window.location = $(this).attr('href');
+  });
   var $container = $("#container");
 
   $container.isotope({
