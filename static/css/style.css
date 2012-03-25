@@ -43,9 +43,12 @@ body {
   height: 100%;
   z-index: 1000;
 }
+.dialog #content {
+  border-radius: 25px;
+}
 .dialog div {
   width: 40%;
-  margin: 120px auto;
+  margin: 20px auto;
   opacity: 0.95;
   background-color: #fff;
   padding: 15px;

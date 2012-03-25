@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('.dialog').hide().click(function() {
-      $(this).hide();
+      $(this).slideToggle();
   });
   var $container = $("#container");
 
@@ -64,7 +64,7 @@ $(document).ready(function() {
       $post.click(function() {
         $('.dialog #content').html(text);
         //$('.dialog').css('visibility','visible');
-        $('.dialog').toggle();
+        $('.dialog').slideToggle();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       });
