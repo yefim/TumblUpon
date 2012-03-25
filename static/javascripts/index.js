@@ -1,6 +1,9 @@
 $(document).ready(function() {
-  $('.dialog').hide().click(function() {
+  $('.dialog').hide().not($('a')).click(function() {
       $(this).fadeOut();
+  });
+  $('#logo img').click(function() {
+    window.location = '/';
   });
   var $container = $("#container");
 

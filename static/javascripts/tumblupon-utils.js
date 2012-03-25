@@ -42,25 +42,30 @@ var render_entry = function(content_args) {
 }
 var process_full_post = function(post) {
   var blog_name = post.blog_name;
+  var post_url = post.post_url;
+  var blog_url = post_url.match("http://(.*)\/post\/.*")[1];
   var caption = post.caption;
   var timestamp = post.timestamp;
   var note_count = post.note_count;
   var photos = post.photos;
   var tags = post.tags;
-  var text = "<div id='mosaic'>";
-  text += "<div class='blogname'>"+blog_name+"</div>";
-  text += "<div class='note'>"+note_count+"</div>";
-  text += "<div class='date'>"+make_datestamp(timestamp)+"</div>";
-  for (i in tags) {
-    text += "<div class='tag'>"+tags[i]+"</div>";
-  }
+  var caption = post.caption;
+  var text = "<div class='blogname'>Posted by "+linkify('http://'+blog_url,blog_name)+" on "+linkify(make_datestamp(timestamp),post_url)+"</div><div class='note'>"+note_count+" notes</div>";
   text += "<div class='pics'>";
   for (j in photos) {
-    text += "<img src='"+photos[j].alt_sizes[0].url+"'/><br/>";
+    //text += "<div style='background:url("+photos[j].alt_sizes[0].url+") no-repeat center center'></div>";
+    text += linkify("<img src='"+photos[j].alt_sizes[0].url+"'/>",post_url);
+    //text += "<div>"+photos[j].alt_sizes[0].url+"</div>";
   }
   text += "</div>";
+  text += "<div class='caption'>"+caption+"</div>";
+  text += "<div class='tags'>tags: " + tags.join(', ') + "</div>";
   text += "</div>";
   return text;
+}
+
+var linkify = function(text, url) {
+  return "<a href='"+url+"'>"+text+"</a>";
 }
 
 var processPhoto = function(photo, blog_name, timestamp) {
@@ -156,9 +161,13 @@ var populate = function (offset) {
               showcaption: true
           }); 
       }   
-      var text = process_full_post(post);
       $post.click(function() {
+        var text = process_full_post(post);
+        console.log('clicked');
         $('.dialog #content').html(text);
+        $('.dialog').css('top',$('.dialog').offset().top);
+        //var l = $(document).width()/2 - $(text).width()/2;
+        //$('.dialog #content').css('left', l);
         //$('.dialog').css('visibility','visible');
         $('.dialog').fadeIn();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
