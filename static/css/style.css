@@ -46,14 +46,22 @@ body {
 }
 .dialog #content {
   border-radius: 25px;
-}
-.dialog div {
-  width: 50%;
-  margin: 20px auto;
   opacity: 0.95;
-  background-color: #fff;
-  padding: 15px;
   font-size: 20pt;
+  background-color: #fff;
+  width: 50%;
+  margin: 50px auto;
+  padding: 50px;
+  background-color: #D0F2F7;
+}
+.dialog .tags {
+  font-size: 16pt;
+}
+.dialog .note, .dialog .blogname {
+  display: inline;
+}
+.dialog .note {
+  font-size: 14px;
 }
 .dialog .pics {
   float: left;

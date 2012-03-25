@@ -46,18 +46,14 @@ var process_full_post = function(post) {
   var note_count = post.note_count;
   var photos = post.photos;
   var tags = post.tags;
-  var text = "<div id='mosaic'>";
-  text += "<div class='blogname'>"+blog_name+"</div>";
-  text += "<div class='note'>"+note_count+"</div>";
+  var text = "<div class='blogname'>"+blog_name+"</div>";
+  text += "<div class='note'>"+note_count+" notes</div>";
   text += "<div class='date'>"+make_datestamp(timestamp)+"</div>";
-  for (i in tags) {
-    text += "<div class='tag'>"+tags[i]+"</div>";
-  }
+  text += "<div class='tags'>tags: " + tags.join(', ') + "</div>";
   text += "<div class='pics'>";
   for (j in photos) {
     text += "<img src='"+photos[j].alt_sizes[0].url+"'/><br/>";
   }
-  text += "</div>";
   text += "</div>";
   return text;
 }
@@ -136,6 +132,7 @@ var populate = function (offset) {
       }   
       var text = process_full_post(post);
       $post.click(function() {
+        console.log('clicked');
         $('.dialog #content').html(text);
         //$('.dialog').css('visibility','visible');
         $('.dialog').fadeIn();
