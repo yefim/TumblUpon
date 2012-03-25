@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <title>tumblUpon</title>
     <meta name="author" content="Ceasar, Geoff, Dan">
-		<title>TumblUpon</title>
+    <title>TumblUpon {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/isotope.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
     {% block styles %}
@@ -20,30 +21,15 @@
     {% endblock %}
   </head>
   <body>
+    {% include "flashes.html" %}
     <div class='dialog'>
       <div id='content'></div>
     </div>
     <div id="wrapper">
-      <div id='header'>
-        <div id='logo'>
-          <img src='/static/images/logo.png'/>
-        </div>
-        <div id='buttons'>
-          <a href='#newest' class='selected'>Newest</a>
-          <a href='#oldest'>Oldest</a>
-          </ul>
-        </div>
-      </div>
+      {% include "header.html" %}
       {% block content %}
       {% endblock %}
-      <div id='footer'>
-        <p>&copy; tumblTope 2012</p>
-        <p>A project by 
-          <a href='https://twitter.com/Ceasar_Bautista'>Ceasar</a>,
-          <a href='https://twitter.com/yefim323'>Geoffrey</a>, and
-          <a href='https://twitter.com/kibib1te'>Dan</a>
-        </p>
-      </div>
+      {% include "footer.html" %}
     </div> <!-- /container -->
   </body>
 </html>
