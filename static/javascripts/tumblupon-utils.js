@@ -23,8 +23,8 @@ var UTILS = {
  * simple text if type="text".
  */
 function render_entry (content_args) {
-    var str = ""; //"<a href='" + content_args.post_url + "'>";
-    str += "<div class='post " + content_args.type + "'>\n";
+    var str = "<div class='post " + content_args.type + "'>\n";
+    str += "<a href='" + content_args.post_url + "'>";
     switch (content_args.type) {
         case "photo":
             var photo = content_args.photos[0];
@@ -38,7 +38,8 @@ function render_entry (content_args) {
 
     str += "\t<h2 class='blog-name'>" + content_args.blog_name + "</h2>\n";
     str += "\t<p class='datestamp'>" + make_datestamp(content_args.timestamp) + "</p>\n";
-    str += "</div>\n"
+    str += "</a>\n";
+    str += "</div>\n";
 
     return str;
 }
