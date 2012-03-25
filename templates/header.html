@@ -9,6 +9,7 @@
     <div class=navigation>
       {% if g.user %}
         <a href="{{ url_for('logout') }}">sign out [{{ g.user.username }}]</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
       {% else %}
         <a href="{{ url_for('register') }}">Register</a>
         <a href="{{ url_for('login') }}">Sign in</a>
