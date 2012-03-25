@@ -9,7 +9,7 @@ var UTILS = {
     MAX_WIDTH: 107,
     PHOTO_INDEX: 0,
     OPTIMAL_WIDTH: 350,
-    WIDTH_TOL = 15
+    WIDTH_TOL: 15
 };
 
 /* Renders a post entry via the following specifications:
@@ -68,7 +68,6 @@ var processPhoto = function(photo, blog_name, timestamp) {
     var url = alt.url;
     var height = alt.height;
     var width = alt.width;
-    console.log(height + ', ' + width);
 
     // header div element
     var html = "<div class='post photo' data-category='photo' data-timestamp='" +
@@ -123,7 +122,7 @@ var snip_text = function(string) {
      *
      * Don't question these rules. They're as random as a quantum bogosort.
      */
-    for (var i = 0; i < WIDTH_TOL; i += 1) {
+    for (var i = 0; i < UTILS.WIDTH_TOL; i += 1) {
         if (result[UTILS.MAX_WIDTH - i] === ' ') {
             return result.substring(0, UTILS.MAX_WIDTH - i) + "...";
         }
@@ -149,7 +148,6 @@ var populate = function (offset) {
       $container.isotope('insert', $post);
           
       if ($post.hasClass('photo')) {
-          console.log("has photo");
           $post.capslide({
               caption_color: '#fff',
               caption_bgcolor: '#000',
