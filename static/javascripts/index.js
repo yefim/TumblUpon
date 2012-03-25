@@ -1,7 +1,7 @@
 $(document).ready(function() {
   $("#container").isotope({
     itemSelector : '.post',
-    layoutMode : 'fitRows'
+    layoutMode : 'masonry'
   });
   $.ajax({
     type: 'GET',
@@ -12,7 +12,7 @@ $(document).ready(function() {
       $post = $(render_entry(post));
       $('#container').isotope('insert', $post);
       //$('#container').append(render_entry(post));
-      console.log(response);
+      console.log(post);
     });
   });
 });

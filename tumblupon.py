@@ -85,7 +85,7 @@ def tag(tag):
     return json.dumps(get_tumblr_tag(tag))
 
 
-POPULAR = ['LOL', 'Fashion', 'GIFS', 'Vintage', 'Landscape']
+POPULAR = ['Fashion', 'LOL', 'Vintage', 'Landscape']
 
 
 @app.route('/api/v1/popular/')
