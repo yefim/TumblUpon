@@ -32,7 +32,7 @@ var render_entry = function(content_args) {
                             content_args.blog_name,
                             content_args.timestamp);
     } else {
-        return null;
+        return "";
     }
 }
 
@@ -122,8 +122,8 @@ var populate = function (offset) {
     response = $.parseJSON(response);
     $.each(response, function(index, post) {
       var entry = render_entry(post);
-      if (entry == null) return true;
-      $post = $(entry);
+      if (entry == null) continue;
+      var $post = $(entry);
       
       $container.isotope('insert', $post);
           
