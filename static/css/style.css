@@ -32,6 +32,7 @@ body {
   font-size: 12pt;
 }
 .text {
+  color: #CCC;
   height: 400px;
   width: 400px;
 }
@@ -75,7 +76,7 @@ body {
 }
 .ic_caption{
     position:absolute;    
-    opacity:0.6;   
+    opacity:0.7;   
     overflow:hidden;
     margin:0px;
     padding:0px;
