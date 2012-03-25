@@ -55,7 +55,7 @@ var processPhoto = function(photo, timestamp) {
   var width = alt.width;
   console.log(height + ', ' + width);
   return "<div class='post photo' data-category='photo' data-timestamp='" + timestamp + "'>"+
-          "<div id='pic' style='height: " + height + "px;" + 
+          "<div class='pic' style='height: " + height + "px;" + 
           "width: " + width + "px;" +
           "background:url(" + url + ") no-repeat center center'></div></div>";
 }
