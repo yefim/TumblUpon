@@ -3,6 +3,11 @@
  * Isotope tiles.
  **********************************************************************/
 
+var UTILS = {
+    months: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP',
+        'OCT', 'NOV', 'DEC']
+};
+
 /* Renders a post entry via the following specifications:
  * 
  * content_args = 
@@ -32,6 +37,7 @@ function render_entry (content_args) {
     }
 
     str += "\t<h2 class='blog-name'>" + content_args.blog_name + "</h2>\n";
+    str += "\t<p class='datestamp'>" + make_datestamp(content_args.timestamp) + "</p>\n";
     str += "</div>\n"
 
     return str;
@@ -41,4 +47,9 @@ function snip_text (string) {
     var MAX_WIDTH = 30;
     var result = string.replace(/<(?:.|\n)*?>/gm, '');
     return result.substring(0, MAX_WIDTH) + "...";
+}
+
+function make_datestamp (timestamp) {
+    var d = new Date(timestamp);
+    return UTILS.months[d.getMonth()] + " " + d.getDate();
 }
