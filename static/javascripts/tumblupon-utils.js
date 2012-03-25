@@ -6,9 +6,10 @@
 var UTILS = {
     months: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP',
         'OCT', 'NOV', 'DEC'],
-    MAX_WIDTH: 100,
+    MAX_WIDTH: 107,
     PHOTO_INDEX: 0,
-    OPTIMAL_WIDTH: 350
+    OPTIMAL_WIDTH: 350,
+    WIDTH_TOL: 15
 };
 
 /* Renders a post entry via the following specifications:
@@ -67,7 +68,6 @@ var processPhoto = function(photo, blog_name, timestamp) {
     var url = alt.url;
     var height = alt.height;
     var width = alt.width;
-    console.log(height + ', ' + width);
 
     // header div element
     var html = "<div class='post photo' data-category='photo' data-timestamp='" +
@@ -104,8 +104,31 @@ var getOptimalPhoto = function(alt_sizes) {
 }
 
 var snip_text = function(string) {
+    // Remove the unwanted HTML tags
     var result = string.replace(/<(?:.|\n)*?>/gm, '');
-    return result.substring(0, Math.min(UTILS.MAX_WIDTH, result.length)) + "...";
+
+    if (result.length <= UTILS.MAX_WIDTH)
+        return result;
+
+    /* Now we cut off the text with respect to the following rules:
+     * 
+     * First, look at result[UTILS.MAX_WIDTH]. If this character is a space, we
+     * are done; cut the string off at that point. If not...
+     *
+     * - Within a range from -WIDTH_TOL to MAX_WIDTH, find the last space.
+     * - If the space does not exist within the tolerance, then we cut off at
+     *   MAX_WIDTH.
+     * - Otherwise, we take the last occurring space.
+     *
+     * Don't question these rules. They're as random as a quantum bogosort.
+     */
+    for (var i = 0; i < UTILS.WIDTH_TOL; i += 1) {
+        if (result[UTILS.MAX_WIDTH - i] === ' ') {
+            return result.substring(0, UTILS.MAX_WIDTH - i) + "...";
+        }
+    }
+
+    return result.substring(0, UTILS.MAX_WIDTH) + "...";
 }
 
 var make_datestamp = function(timestamp) {
@@ -125,7 +148,6 @@ var populate = function (offset) {
       $container.isotope('insert', $post);
           
       if ($post.hasClass('photo')) {
-          console.log("has photo");
           $post.capslide({
               caption_color: '#fff',
               caption_bgcolor: '#000',
