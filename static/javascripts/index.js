@@ -1,12 +1,6 @@
 $(document).ready(function() {
-  $('.dialog').hide().not($('a')).click(function() {
-      $(this).fadeOut();
-  });
   $('#logo img').click(function() {
     window.location = '/';
-  });
-  $('.btn').click(function() {
-    //window.location = $(this).attr('href');
   });
   var $container = $("#container");
 
