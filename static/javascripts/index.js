@@ -14,6 +14,9 @@ $(document).ready(function() {
       $post.mosaic();
       //$('#container').append(render_entry(post));
       console.log(post);
+      $post.click(function() {
+        window.location = '/api/v1/blog/' + post.blog_name + '/post/' + post.id;
+      });
     });
   });
 });
