@@ -8,7 +8,7 @@ var UTILS = {
         'OCT', 'NOV', 'DEC'],
     MAX_WIDTH: 107,
     PHOTO_INDEX: 0,
-    OPTIMAL_WIDTH: 350,
+    OPTIMAL_WIDTH: 250,
     WIDTH_TOL: 15
 };
 
@@ -34,43 +34,6 @@ var render_entry = function(content_args) {
     } else {
         return "";
     }
-    /*
-    switch (content_args.type) {
-        case "photo":
-            return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
-                                content_args.blog_name,
-                                content_args.timestamp);
-        case "text":
-            return "<div class='post text' data-category='text'" +
-                "data-timestamp='" + content_args.timestamp + "'><h1 class='snippet'>" +
-                snip_text(content_args.body) + "</h1></div>";
-        default:
-            return "<div class='post' style='display:hidden'></div>";
-    }
-    */
-}
-var process_full_post = function(post) {
-  var blog_name = post.blog_name;
-  var post_url = post.post_url;
-  var blog_url = post_url.match("http://(.*)\/post\/.*")[1];
-  var caption = post.caption;
-  var timestamp = post.timestamp;
-  var note_count = post.note_count;
-  var photos = post.photos;
-  var tags = post.tags;
-  var caption = post.caption;
-  var text = "<div class='blogname'>Posted by "+linkify('http://'+blog_url,blog_name)+" on "+linkify(make_datestamp(timestamp),post_url)+"</div><div class='note'>"+note_count+" notes</div>";
-  text += "<div class='pics'>";
-  for (j in photos) {
-    //text += "<div style='background:url("+photos[j].alt_sizes[0].url+") no-repeat center center'></div>";
-    text += linkify("<img src='"+photos[j].alt_sizes[0].url+"'/>",post_url);
-    //text += "<div>"+photos[j].alt_sizes[0].url+"</div>";
-  }
-  text += "</div>";
-  text += "<div class='caption'>"+caption+"</div>";
-  text += "<div class='tags'>tags: " + tags.join(', ') + "</div>";
-  text += "</div>";
-  return text;
 }
 
 var linkify = function(text, url) {
@@ -157,8 +120,7 @@ var populate = function (offset) {
     url:'/api/v1/popular/?offset=' + 20 * offset
   }).done(function(response) {
     response = $.parseJSON(response);
-    for(index in response) {
-      var post = response[index];
+    $.each(response, function(index, post) {
       var entry = render_entry(post);
       if (entry == null) continue;
       var $post = $(entry);
@@ -173,20 +135,15 @@ var populate = function (offset) {
               border: '1px dashed #000',
               showcaption: true
           }); 
-      }   
-      $post.click(function() {
-        var text = process_full_post(post);
-        //console.log('clicked');
-        $('.dialog #content').html(text);
-        $('.dialog').css('top',$('.dialog').offset().top);
-        //var l = $(document).width()/2 - $(text).width()/2;
-        //$('.dialog #content').css('left', l);
-        //$('.dialog').css('visibility','visible');
-        $('.dialog').fadeIn();
-        //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
-        //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
-      }); 
-    }
+      }
+      var url = post.post_url;
+      $post.bind('click', {url: url}, function(event) {
+          window.open(
+              event.data.url,
+              '_blank'
+          );
+      });
+    });
     setTimeout(function () { scrollLimit += 1; }, 5000);
   });
 
@@ -205,13 +162,13 @@ var scroll = function () {
     } else {
         scrollPosition = window.pageYOffset;
     }
-    console.log(clientHeight + scrollPosition + scrollTrigger + " " + $(document).height());
+    //console.log(clientHeight + scrollPosition + scrollTrigger + " " + $(document).height());
     if (clientHeight + scrollPosition + scrollTrigger > $(document).height()) {
         console.log("Trigger" + " " + scrolls + " " + scrollLimit);
         if (scrolls < scrollLimit) {
             scrolls += 1;
-            console.log("Scrolls" + scrolls + " " + scrollLimit);
-            console.log("populating...");
+            //console.log("Scrolls" + scrolls + " " + scrollLimit);
+            //console.log("populating...");
             populate(scrolls);
         }
     }
