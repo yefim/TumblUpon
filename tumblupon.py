@@ -223,7 +223,12 @@ def post(host_name, post_id):
 
 @app.route('/api/v1/tags/<tag>/')
 def tag(tag):
-    return json.dumps(get_tumblr_tag(tag))
+    responses = []
+    data, tag = get_tumblr_tag(tag)
+    for response in data:
+        response['tag'] = tag
+        responses.append(response)
+    return json.dumps(responses)
 
 def tagify(d, tag):
     """Add a tag to a dict"""
