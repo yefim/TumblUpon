@@ -34,9 +34,19 @@ $(document).ready(function() {
     response = $.parseJSON(response);
     $.each(response, function(index, post) {
       $post = $(render_entry(post));
-      $post.mosaic();
       $container.isotope('insert', $post);
-      //$('#container').append(render_entry(post));
+      
+      if ($post.hasClass('photo')) {
+          console.log("has photo");
+          $post.capslide({
+              caption_color: 'black',
+              caption_bgcolor: '#E6E79C',
+              overlay_bgcolor: '#E6E79C',
+              border: '',
+              showcaption: true
+          });
+      }
+
       console.log(post);
       $post.click(function() {
         var link_url = post.link_url.replace(/http:\/\//i,'');
