@@ -8,7 +8,6 @@ var UTILS = {
         'OCT', 'NOV', 'DEC'],
     MAX_WIDTH: 100,
     PHOTO_INDEX: 0,
-    ALT_SIZE_INDEX: 0,
     OPTIMAL_WIDTH: 350
 };
 
@@ -31,7 +30,8 @@ var render_entry = function(content_args) {
     //var str += "<div class='post " + content_args.type + "'>";
     switch (content_args.type) {
         case "photo":
-            return processPhoto(content_args.photos[UTILS.PHOTO_INDEX], 
+            return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
+                                content_args.blog_name,
                                 content_args.timestamp);
         case "text":
             return "<div class='post text' data-category='text'" +
@@ -48,16 +48,34 @@ var render_entry = function(content_args) {
 
 }
 
-var processPhoto = function(photo, timestamp) {
+var processPhoto = function(photo, blog_name, timestamp) {
   var alt = getOptimalPhoto(photo.alt_sizes);
   var url = alt.url;
-  var height = alt.height * 1.2;
-  var width = alt.width * 1.2;
+  var height = alt.height;
+  var width = alt.width;
   console.log(height + ', ' + width);
-  return "<div class='post photo' style='height: " + height + "px;" + 
-        "width: " + width + "px;" +
-        "background:url(" + url + ") no-repeat center center' " +
-        "data-category='photo' data-timestamp='" + timestamp + "'></div>";
+
+  /*var html = "<div class='post photo ic_container' " + 
+        "data-category='photo' data-timestamp='" + timestamp + "'>";
+  
+  html += "<img class='pic' style='height:" + height + "px; width:" + width + " px;' " +
+      "src='" + url + "' />";
+  html += "<div class='overlay' style='display:none;'></div>";
+  html += "<div class='ic_caption'>";
+  html += "<p class='ic_text'>from: " + blog_name + "</p>";
+  html += "</div>";
+  
+  html += "</div>";
+  return html;*/
+  return "<div class='post photo' data-category='photo' data-timestamp='" + timestamp + "'>" +
+          "<div class='pic ic_container' style='height: " + height + "px;" + 
+          "width: " + width + "px;" +
+          "background:url(" + url + ") no-repeat center center'>" +
+          "<div class='overlay' style='display:none;'></div>" +
+          "<div class='ic_caption'>" +
+          "<h3>from: &nbsp;&nbsp;" + blog_name + "</h3>" +
+          "<p class='ic_text'>" + make_datestamp(timestamp) + "</p>" +
+          "</div></div></div>";
 }
 
 var getOptimalPhoto = function(alt_sizes) {
@@ -75,7 +93,7 @@ var snip_text = function(string) {
     return result.substring(0, Math.min(UTILS.MAX_WIDTH, result.length)) + "...";
 }
 
-function make_datestamp (timestamp) {
+var make_datestamp = function(timestamp) {
     var d = new Date(timestamp);
     return UTILS.months[d.getMonth()] + " " + d.getDate();
 }
@@ -90,13 +108,36 @@ var populate = function (offset) {
     $.each(response, function(index, post) {
       $post = $(render_entry(post));
       $container.isotope('insert', $post);
-      //$('#container').append(render_entry(post));
+          
+      if ($post.hasClass('photo')) {
+          console.log("has photo");
+          $post.capslide({
+              caption_color: '#fff',
+              caption_bgcolor: '#000',
+              overlay_bgcolor: '#444',
+              border: '1px dashed #000',
+              showcaption: true
+          }); 
+      }   
+
       console.log(post);
+      var text = "<div id='mosaic'>" +
+                    "<div>Testing1</div>" +
+                    "<div>Testing2</div>" +
+                    "<div>Testing3</div>" +
+                  "</div>";
       $post.click(function() {
-        var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
-        window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
-      });
-    });
+        $('.dialog #content').html('HELLO THERE');
+        //$('.dialog').css('visibility','visible');
+        if ($('.dialog').is(':visible')) {
+          $('.dialog').show();
+        } else {
+          $('.dialog').hide();
+        }   
+        //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
+        //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
+      }); 
+    }); 
     setTimeout(function () { scrollLimit += 1; }, 5000);
   });
 

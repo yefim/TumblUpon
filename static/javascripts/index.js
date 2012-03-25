@@ -1,12 +1,18 @@
 $(document).ready(function() {
+  $('.dialog').hide();
   var $container = $("#container");
 
   $container.isotope({
     itemSelector : '.post',
     layoutMode : 'masonry',
+    animationOption: {
+      duration: 750,
+      easing: 'linear',
+      queue: false
+    },
     getSortData : {
         timestamp : function ($elem) {
-            return parseInt($elem.attr('data-timestamp'));
+          return parseInt($elem.attr('data-timestamp'));
         }
     },
     sortBy : 'timestamp',
@@ -26,8 +32,7 @@ $(document).ready(function() {
       e.preventDefault();
       return true;
   });
-
   populate(0);
-  setInterval('scroll();', 1000);
+  setInterval("scroll();", 1000);
 
 });
