@@ -3,6 +3,13 @@ $(document).ready(function() {
     window.location = '/';
   });
   var $container = $("#container");
+  //$('#options').hide();
+
+  /*
+  $('#settings').click(function() {
+    $('#options').slideToggle();
+  })
+  */
 
   $container.isotope({
     itemSelector : '.post',
@@ -54,5 +61,4 @@ $(document).ready(function() {
   });
 
   populate(0);
-  // setInterval("scroll();", 1000);
 });
