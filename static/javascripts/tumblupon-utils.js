@@ -37,7 +37,7 @@ var render_entry = function(content_args) {
                 "data-timestamp='" + content_args.timestamp + "'><h1 class='snippet'>" +
                 snip_text(content_args.body) + "</h1></div>";
         default:
-            return "<div class='post' style='display:hidden'></div>";
+            return "";
     }
 }
 var process_full_post = function(post) {
