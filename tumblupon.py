@@ -201,7 +201,7 @@ def delete_tag(tag):
     return redirect(url_for('index'))
 
 
-@app.route('/settings/', methods=['GET'])
+@app.route('/dashboard/', methods=['GET'])
 def settings():
     if not g.user:
         return redirect(url_for('index'))
