@@ -186,10 +186,6 @@ def tags():
     return redirect(url_for('index'))
 
 
-def tagify(d, tag):
-    """Add a tag to a dict"""
-    d['tag'] = tag
-    return d
 
 
 @app.route('/tag/destroy/<tag>/', methods=['GET'])
@@ -228,6 +224,11 @@ def post(host_name, post_id):
 @app.route('/api/v1/tags/<tag>/')
 def tag(tag):
     return json.dumps(get_tumblr_tag(tag))
+
+def tagify(d, tag):
+    """Add a tag to a dict"""
+    d['tag'] = tag
+    return d
 
 
 POPULAR = ['funny', 'LOL']

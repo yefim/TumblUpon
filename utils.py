@@ -3,8 +3,27 @@ import time
 import threading
 import urllib
 import urllib2
+import functools
+import cPickle
 
 
+class Perfect(object):
+  """A naive memoization strategy. Remembers everything."""
+  def __call__(self, func):
+    cache = {}
+    @functools.wraps(func)
+    def memoized(*args, **kwargs):
+      hash_ = cPickle.dumps((args, set(kwargs.iteritems())))
+      try:
+        return cache[hash_]
+      except KeyError:
+        print "cache miss"
+        cache[hash_] = func(*args, **kwargs)
+        return cache[hash_]
+    return memoized
+
+
+@Perfect()
 def api(domain, *args, **kwargs):
     assert domain.endswith("/")
     path = "".join((domain, "/".join([str(arg) for arg in args]), "?", urllib.urlencode(kwargs)))
@@ -28,6 +47,7 @@ class Mapper(threading.Thread):
         self.result = self.func(self.item)
 
 
+@Perfect()
 def thread_map(func, iterable):
     """Run a function in parallel with threads."""
     threads = []
@@ -39,3 +59,6 @@ def thread_map(func, iterable):
     for thread in threads:
         thread.join()
         yield thread.result
+
+
+
