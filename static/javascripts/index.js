@@ -11,6 +11,9 @@ $(document).ready(function() {
       duration: 750,
       easing: 'linear',
       queue: false
+            }).done(function(response) {
+                $(e).parents(".row").remove();
+            });
     },
     getSortData : {
         timestamp : function ($elem) {
@@ -55,4 +58,12 @@ $(document).ready(function() {
 
   populate(0);
   // setInterval("scroll();", 1000);
+
+  $("#tag").submit(function() {
+      addItem();
+      return true;
+  });
+  $("#add-button").click(function() {
+      addItem();
+      return true;
 });

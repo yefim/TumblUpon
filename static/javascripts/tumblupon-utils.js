@@ -32,7 +32,7 @@ var render_entry = function(content_args) {
                             content_args.blog_name,
                             content_args.timestamp);
     } else {
-        return "";
+        return null;
     }
 }
 
