@@ -186,10 +186,6 @@ def tags():
     return redirect(url_for('index'))
 
 
-def tagify(d, tag):
-    """Add a tag to a dict"""
-    d['tag'] = tag
-    return d
 
 
 @app.route('/tag/destroy/<tag>/', methods=['GET'])
@@ -229,8 +225,13 @@ def post(host_name, post_id):
 def tag(tag):
     return json.dumps(get_tumblr_tag(tag))
 
+def tagify(d, tag):
+    """Add a tag to a dict"""
+    d['tag'] = tag
+    return d
 
-POPULAR = ['funny', 'LOL']
+
+POPULAR = ['LOL', 'fashion', 'vintage', 'landscape', 'animals', 'illustration', 'gaming', 'art', 'makeup', 'film', 'tattoos', 'typography', 'food', 'crafts']
 
 
 @app.route('/api/v1/popular/')
@@ -242,13 +243,15 @@ def popular():
         except KeyError:
             offset = 0
         def get_data(tag):
-            return get_tumblr_tag(tag, offset=offset)
+            return get_tumblr_tag(tag, offset=offset), tag
 
         user_id = session['user_id']
         tags = get_user_tags(user_id)
         if tags:
-            for response in thread_map(get_data, tags):
-                responses.extend(response)
+            for data, tag in thread_map(get_data, tags):
+                for response in data:
+                    response['tag'] = tag
+                    responses.append(response)
         return json.dumps(responses)
     else:
         responses = []
