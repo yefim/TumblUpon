@@ -47,7 +47,6 @@ class Mapper(threading.Thread):
         self.result = self.func(self.item)
 
 
-@Perfect()
 def thread_map(func, iterable):
     """Run a function in parallel with threads."""
     threads = []

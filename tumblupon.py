@@ -243,13 +243,15 @@ def popular():
         except KeyError:
             offset = 0
         def get_data(tag):
-            return get_tumblr_tag(tag, offset=offset)
+            return get_tumblr_tag(tag, offset=offset), tag
 
         user_id = session['user_id']
         tags = get_user_tags(user_id)
         if tags:
-            for response in thread_map(get_data, tags):
-                responses.extend(response)
+            for data, tag in thread_map(get_data, tags):
+                for response in data:
+                    response['tag'] = tag
+                    responses.append(response)
         return json.dumps(responses)
     else:
         responses = []
