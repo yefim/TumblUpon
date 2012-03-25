@@ -132,7 +132,7 @@ var snip_text = function(string) {
 }
 
 var make_datestamp = function(timestamp) {
-    var d = new Date(timestamp);
+    var d = new Date(timestamp * 1000);
     return UTILS.months[d.getMonth()] + " " + d.getDate();
 }
 
