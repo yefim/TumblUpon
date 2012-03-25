@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('.dialog').hide().click(function() {
-      $(this).slideToggle();
+      $(this).fadeOut();
   });
   var $container = $("#container");
 
@@ -56,15 +56,11 @@ $(document).ready(function() {
       }
 
       console.log(post);
-      var text = "<div id='mosaic'>" +
-                    "<div>Testing1</div>" +
-                    "<div>Testing2</div>" +
-                    "<div>Testing3</div>" +
-                  "</div>";
+      var text = process_full_post(post);
       $post.click(function() {
         $('.dialog #content').html(text);
         //$('.dialog').css('visibility','visible');
-        $('.dialog').slideToggle();
+        $('.dialog').fadeIn();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       });
