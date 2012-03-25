@@ -50,8 +50,7 @@ var process_full_post = function(post) {
   var photos = post.photos;
   var tags = post.tags;
   var caption = post.caption;
-  var text = "<div class='blogname'>Posted by <a target='_blank' href='http://"+blog_url+"'>"+blog_name+"</a> on "+linkify(make_datestamp(timestamp),post_url)+"</div><br/><br/><br/>";
-  text += "<div class='note'>"+note_count+" notes</div>";
+  var text = "<div class='blogname'>Posted by "+linkify('http://'+blog_url,blog_name)+" on "+linkify(make_datestamp(timestamp),post_url)+"</div><div class='note'>"+note_count+" notes</div>";
   text += "<div class='pics'>";
   for (j in photos) {
     //text += "<div style='background:url("+photos[j].alt_sizes[0].url+") no-repeat center center'></div>";
