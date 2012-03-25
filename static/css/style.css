@@ -6,8 +6,16 @@ body {
 #container {
   /* margin-top: 200px; */
 }
-#logo img {
+#logo {
   cursor: pointer;
+  background-image: url(/static/images/logo.png);
+  display: block;
+  height: 129px;
+  width: 529px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 #header {
   /* position: fixed; */

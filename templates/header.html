@@ -1,7 +1,5 @@
 <div id='header'>
-    <div id='logo'>
-      <img src='/static/images/logo.png'/>
-    </div>
+    <a id="logo" href="{{ url_for('index') }}"></a>
     <div id='sort-by'>
       <button href='#newest' class='selected btn btn-large'>Newest</button>
       <button href='#oldest' class='btn btn-large'>Oldest</button>
@@ -9,6 +7,8 @@
     <div class=navigation>
       {% if g.user %}
         <button class='btn' onclick="{{ url_for('logout') }}">logout [{{ g.user.username }}]</button>
+        <a class='btn' onclick="{{ url_for('logout') }}">logout [{{ g.user.username }}]</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
       {% else %}
         <button class='btn btn-small' href="{{ url_for('register') }}">Register</button>
         <button class='btn btn-small' href="{{ url_for('login') }}">Login</button>
