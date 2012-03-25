@@ -122,7 +122,8 @@ var populate = function (offset) {
     response = $.parseJSON(response);
     $.each(response, function(index, post) {
       var entry = render_entry(post);
-      if (entry == null) continue;
+      if (entry == null)
+        return true;
       var $post = $(entry);
       
       $container.isotope('insert', $post);
