@@ -4,9 +4,14 @@ $(document).ready(function() {
   $container.isotope({
     itemSelector : '.post',
     layoutMode : 'masonry',
+    animationOption: {
+      duration: 750,
+      easing: 'linear',
+      queue: false
+    },
     getSortData : {
         timestamp : function ($elem) {
-            return parseInt($elem.attr('data-timestamp'));
+          return parseInt($elem.attr('data-timestamp'));
         }
     },
     sortBy : 'timestamp',

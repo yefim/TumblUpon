@@ -21,7 +21,15 @@
   <body>
     <div id="wrapper">
       <div id='header'>
-        <img src='/static/images/logo.png'/>
+        <div id='logo'>
+          <img src='/static/images/logo.png'/>
+        </div>
+        <div id='buttons'>
+          <ul id='sort-by'>
+            <li><a href='#newest' class='selected'>Newest</a></li>
+            <li><a href='#oldest'>Oldest</a></li>
+          </ul>
+        </div>
       </div>
       {% block content %}
       {% endblock %}
