@@ -51,8 +51,8 @@ var render_entry = function(content_args) {
 var processPhoto = function(photo, blog_name, timestamp) {
   var alt = getOptimalPhoto(photo.alt_sizes);
   var url = alt.url;
-  var height = alt.height * 1.2;
-  var width = alt.width * 1.2;
+  var height = alt.height;
+  var width = alt.width;
   console.log(height + ', ' + width);
 
   /*var html = "<div class='post photo ic_container' " + 
@@ -68,7 +68,7 @@ var processPhoto = function(photo, blog_name, timestamp) {
   html += "</div>";
   return html;*/
   return "<div class='post photo ic_container' data-category='photo' data-timestamp='" + timestamp + "'>" +
-          "<div id='pic' style='height: " + height + "px;" + 
+          "<div class='pic' style='height: " + height + "px;" + 
           "width: " + width + "px;" +
           "background:url(" + url + ") no-repeat center center'></div>" +
           "<div class='overlay' style='display:none;'></div>" +

@@ -3,8 +3,13 @@ body {
  background-color: #D0F2F7;
  font-family: 'Helvetica';
 }
+#container {
+  /* margin-top: 200px; */
+}
 #header {
+  /* position: fixed; */
   padding: 20px;
+  display: inline;
 }
 #footer {
   margin-bottom: 20px;
@@ -14,19 +19,36 @@ body {
   margin: 0 auto;
 }
 .post {
+  padding: 10px;
+}
+.pic {
   cursor: pointer;
-  border: 2px solid #ccc;
+  border: 1px dashed #000;
+  padding: 5px;
   /* max-height: 300px;
   max-width: 300px; */
   /* height: 400px;
   width: 400px; */
   font-size: 12pt;
 }
-.photo {
-  /* height: 800px; 
-  width: 400px; */
-}
 .text {
   height: 400px;
   width: 400px;
+}
+.dialog {
+  visibility: hidden;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: 1000;
+}
+.dialog div {
+  width: 300px;
+  margin: 100px auto;
+  background-color: #fff;
+  padding: 15px;
+  text-align: center;
 }

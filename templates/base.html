@@ -7,11 +7,14 @@
 		<title>TumblUpon</title>
     <link rel="stylesheet" type="text/css" href="/static/css/isotope.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.noty.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/noty_theme_default.css"/>
     {% block styles %}
     {% endblock %}
     
     <script type="text/javascript" src="/static/javascripts/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/static/javascripts/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="/static/javascripts/jquery.noty.js"></script>
     <script type="text/javascript" src="/static/javascripts/tumblupon-utils.js"></script>
     <!--<script type="text/javascript" src="/static/javascripts/mosaic.1.0.1.js"></script>-->
     <script type="text/javascript" src="/static/javascripts/jquery.capSlide.js"></script>
@@ -20,9 +23,19 @@
     {% endblock %}
   </head>
   <body>
+    <div class='dialog'>
+      <div id='content'></div>
+    </div>
     <div id="wrapper">
       <div id='header'>
-        <img src='/static/images/logo.png'/>
+        <div id='logo'>
+          <img src='/static/images/logo.png'/>
+        </div>
+        <div id='buttons'>
+          <a href='#newest' class='selected'>Newest</a>
+          <a href='#oldest'>Oldest</a>
+          </ul>
+        </div>
       </div>
       {% block content %}
       {% endblock %}

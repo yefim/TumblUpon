@@ -4,9 +4,14 @@ $(document).ready(function() {
   $container.isotope({
     itemSelector : '.post',
     layoutMode : 'masonry',
+    animationOption: {
+      duration: 750,
+      easing: 'linear',
+      queue: false
+    },
     getSortData : {
         timestamp : function ($elem) {
-            return parseInt($elem.attr('data-timestamp'));
+          return parseInt($elem.attr('data-timestamp'));
         }
     },
     sortBy : 'timestamp',
@@ -48,9 +53,16 @@ $(document).ready(function() {
       }
 
       console.log(post);
+      var text = "<div id='mosaic'>" +
+                    "<div>Testing1</div>" +
+                    "<div>Testing2</div>" +
+                    "<div>Testing3</div>" +
+                  "</div>";
       $post.click(function() {
-        var link_url = post.link_url.replace(/http:\/\//i,'');
-        window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
+        $('.dialog #content').html('HELLO THERE');
+        $('.dialog').css('visibility','visible');
+        var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
+        //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       });
     });
   });
