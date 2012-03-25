@@ -122,10 +122,10 @@ def logout():
     return redirect(url_for('index'))
 
 
-def user_create(username, email, password):
+def user_create(username, password):
     g.db.execute('''insert into user (
-        username, email, pw_hash) values (?, ?, ?)''',
-        [username, email, generate_password_hash(password)])
+        username,  pw_hash) values (?, ?)''',
+        [username, generate_password_hash(password)])
     user_id = get_user_id(username)
     # for tag in POPULAR:
     #    g.db.execute('''insert into tag (
@@ -146,9 +146,6 @@ def register():
     if request.method == 'POST':
         if not request.form['username']:
             error = 'You have to enter a username'
-        elif not request.form['email'] or \
-                 '@' not in request.form['email']:
-            error = 'You have to enter a valid email address'
         elif not request.form['password']:
             error = 'You have to enter a password'
         elif request.form['password'] != request.form['password2']:
@@ -156,7 +153,7 @@ def register():
         elif get_user_id(request.form['username']) is not None:
             error = 'The username is already taken'
         else:
-            user_create(request.form['username'], request.form['email'], request.form['password'])
+            user_create(request.form['username'], request.form['password'])
             authenticate(request.form['username'], request.form['password'])
             return redirect(url_for('settings'))
     return render_template('register.html', error=error)
