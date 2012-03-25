@@ -141,23 +141,15 @@ var populate = function (offset) {
       }   
 
       console.log(post);
-      var text = "<div id='mosaic'>" +
-                    "<div>Testing1</div>" +
-                    "<div>Testing2</div>" +
-                    "<div>Testing3</div>" +
-                  "</div>";
+      var text = process_full_post(post);
       $post.click(function() {
-        $('.dialog #content').html('HELLO THERE');
+        $('.dialog #content').html(text);
         //$('.dialog').css('visibility','visible');
-        if ($('.dialog').is(':visible')) {
-          $('.dialog').show();
-        } else {
-          $('.dialog').hide();
-        }   
+        $('.dialog').fadeIn();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       }); 
-    }); 
+    });
     setTimeout(function () { scrollLimit += 1; }, 5000);
   });
 
