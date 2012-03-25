@@ -42,9 +42,19 @@ $(document).ready(function() {
     response = $.parseJSON(response);
     $.each(response, function(index, post) {
       $post = $(render_entry(post));
-      $post.mosaic();
       $container.isotope('insert', $post);
-      //$('#container').append(render_entry(post));
+      
+      if ($post.hasClass('photo')) {
+          console.log("has photo");
+          $post.capslide({
+              caption_color: '#fff',
+              caption_bgcolor: '#000',
+              overlay_bgcolor: '#f9ca8d',
+              border: '1px dashed #000',
+              showcaption: true
+          });
+      }
+
       console.log(post);
       var text = "<div id='mosaic'>" +
                     "<div>Testing1</div>" +
