@@ -105,8 +105,7 @@ $(document).ready(function() {
               var url = post.post_url;
               $post.bind('click', {url: url}, function(event) {
                   window.open(
-                      event.data.url,
-                      '_blank'
+                      event.data.url, 'Tumblr', 'height=700,width=900,scrollbars=yes,resizable=yes'
                  );
               });
             });
