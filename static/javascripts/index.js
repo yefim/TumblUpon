@@ -35,11 +35,12 @@ $(document).ready(function() {
     $.each(response, function(index, post) {
       $post = $(render_entry(post));
       $post.mosaic();
-      $('#container').isotope('insert', $post);
+      $container.isotope('insert', $post);
       //$('#container').append(render_entry(post));
       console.log(post);
       $post.click(function() {
-        window.location = '/api/v1/blog/' + post.blog_name + '/post/' + post.id;
+        var link_url = post.link_url.replace(/http:\/\//i,'');
+        window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       });
     });
   });
