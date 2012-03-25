@@ -1,5 +1,6 @@
 from __future__ import with_statement
-import sqlite3
+# import sqlite3
+import psycopg2
 import json
 from contextlib import closing
 
@@ -28,7 +29,7 @@ app.config.from_object(__name__)
 
 def connect_db():
     """Connect to the database."""
-    return sqlite3.connect(app.config['DATABASE'])
+    return psycopg2.connect("dbname=test user=postgres")
 
 
 def query_db(query, args=(), one=False):
