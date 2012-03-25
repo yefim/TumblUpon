@@ -49,19 +49,24 @@ var process_full_post = function(post) {
   var note_count = post.note_count;
   var photos = post.photos;
   var tags = post.tags;
-  var text = "<div class='blogname'>Posted by <a target='_blank' href='http://"+blog_url+"'>"+blog_name+"</a></div>";
+  var caption = post.caption;
+  var text = "<div class='blogname'>Posted by <a target='_blank' href='http://"+blog_url+"'>"+blog_name+"</a> on "+linkify(make_datestamp(timestamp),post_url)+"</div>";
   text += "<div class='note'>"+note_count+" notes</div>";
   text += "<div class='pics'>";
   for (j in photos) {
     //text += "<div style='background:url("+photos[j].alt_sizes[0].url+") no-repeat center center'></div>";
-    text += "<a target='_blank' href='"+post_url+"'><img src='"+photos[j].alt_sizes[0].url+"'/></a>";
+    text += linkify("<img src='"+photos[j].alt_sizes[0].url+"'/>",post_url);
     //text += "<div>"+photos[j].alt_sizes[0].url+"</div>";
   }
   text += "</div>";
-  text += "<div class='date'>"+make_datestamp(timestamp)+"</div>";
+  text += "<div class='caption'>"+caption+"</div>";
   text += "<div class='tags'>tags: " + tags.join(', ') + "</div>";
   text += "</div>";
   return text;
+}
+
+var linkify = function(text, url) {
+  return "<a href='"+url+"'>"+text+"</a>";
 }
 
 var processPhoto = function(photo, blog_name, timestamp) {

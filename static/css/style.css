@@ -1,4 +1,5 @@
 * {padding: 0; margin: 0 }
+a {text-decoration: none; }
 body {
  font-family: 'Helvetica';
 }
@@ -50,7 +51,6 @@ body {
 }
 .dialog #content {
   border-radius: 25px;
-  opacity: 0.95;
   font-size: 20pt;
   background-color: #fff;
   width: 50%;
