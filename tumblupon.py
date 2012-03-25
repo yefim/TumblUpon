@@ -133,26 +133,6 @@ def user_create(username, email, password):
     g.db.commit()
 
 
-@app.route('/mytags/')
-def mytags():
-    if g.user:
-        responses = []
-        try:
-            offset = request.args.get('offset', '')
-        except KeyError:
-            offset = 0
-        def get_data(tag):
-            return get_tumblr_tag(tag, offset=offset)
-
-        user_id = session['user_id']
-        tags = g.db.execute('select tag from tag where user_id = ?',
-                           [user_id]).fetchone()
-        if tags:
-            for response in thread_map(get_data, tags):
-                responses.extend(response)
-        return json.dumps(responses)
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Registers the user."""
@@ -179,6 +159,43 @@ def register():
 
 
 # User Resource
+
+
+@app.route('/tag/create/<tag>/', methods=['GET'])
+def create_tag(tag):
+    if g.user:
+        user_id = session['user_id']
+        if tag not in get_user_tags(user_id):
+            g.db.execute('''insert into tag (
+                tag, user_id) values (?, ?)''',
+                [tag, user_id])
+            g.db.commit()
+            flash("Added tag: %s" % tag)
+    return redirect(url_for('index'))
+
+def get_user_tags(user_id):
+    for tag in g.db.execute('select tag from tag where user_id=?', [user_id]):
+        yield tag[0]
+
+@app.route('/tags/', methods=['GET'])
+def tags():
+    if g.user:
+        user_id = session['user_id']
+        return json.dumps(list(get_user_tags(user_id)))
+    return redirect(url_for('index'))
+
+
+@app.route('/tag/destroy/<tag>/', methods=['GET'])
+def delete_tag(tag):
+    if g.user:
+        user_id = session['user_id']
+        tags = get_user_tags(user_id)
+        if tag in tags:
+            g.db.execute('''delete from tag where tag=? and user_id=?''',
+                [tag, user_id])
+            g.db.commit()
+            flash("Deleted tag: %s" % tag)
+    return redirect(url_for('index'))
 
 
 @app.route('/settings/', methods=['GET', 'POST'])
@@ -212,16 +229,32 @@ POPULAR = ['funny', 'LOL']
 
 @app.route('/api/v1/popular/')
 def popular():
-    responses = []
-    try:
-        offset = request.args.get('offset', '')
-    except KeyError:
-        offset = 0
-    def get_data(tag):
-        return get_tumblr_tag(tag, offset=offset)
-    for response in thread_map(get_data, POPULAR):
-        responses.extend(response)
-    return json.dumps(responses)
+    if g.user:
+        responses = []
+        try:
+            offset = request.args.get('offset', '')
+        except KeyError:
+            offset = 0
+        def get_data(tag):
+            return get_tumblr_tag(tag, offset=offset)
+
+        user_id = session['user_id']
+        tags = get_user_tags(user_id)
+        if tags:
+            for response in thread_map(get_data, tags):
+                responses.extend(response)
+        return json.dumps(responses)
+    else:
+        responses = []
+        try:
+            offset = request.args.get('offset', '')
+        except KeyError:
+            offset = 0
+        def get_data(tag):
+            return get_tumblr_tag(tag, offset=offset)
+        for response in thread_map(get_data, POPULAR):
+            responses.extend(response)
+        return json.dumps(responses)
 
 
 if __name__ == '__main__':
