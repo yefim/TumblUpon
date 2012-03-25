@@ -12,34 +12,6 @@ var UTILS = {
     WIDTH_TOL: 15
 };
 
-/* Renders a post entry via the following specifications:
- * 
- * content_args = 
- * {
- *      blog_name:
- *      post_url:
- *      type:
- *      photos: [ {original_size: { url: } } ]
- *      body:
- * }
- *
- * The content field contains either an image url if type="photo", or 
- * simple text if type="text".
- */
-var render_entry = function(content_args) {
-    switch (content_args.type) {
-        case "photo":
-            return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
-                                content_args.blog_name,
-                                content_args.timestamp);
-        case "text":
-            return "<div class='post text' data-category='text'" +
-                "data-timestamp='" + content_args.timestamp + "'><h1 class='snippet'>" +
-                snip_text(content_args.body) + "</h1></div>";
-        default:
-            return "";
-    }
-}
 var process_full_post = function(post) {
   var blog_name = post.blog_name;
   var post_url = post.post_url;
@@ -68,6 +40,36 @@ var linkify = function(text, url) {
   return "<a href='"+url+"'>"+text+"</a>";
 }
 
+/* Renders a post entry via the following specifications:
+ * 
+ * content_args = 
+ * {
+ *      blog_name:
+ *      post_url:
+ *      type:
+ *      photos: [ {original_size: { url: } } ]
+ *      body:
+ * }
+ *
+ * The content field contains either an image url if type="photo", or 
+ * simple text if type="text".
+ */
+var render_entry = function(content_args) {
+    switch (content_args.type) {
+        case "photo":
+            return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
+                                content_args.blog_name,
+                                content_args.timestamp);
+        case "text":
+            return "<div class='post text' data-category='text' " +
+                "data-timestamp='" + content_args.timestamp + "' " +
+                "data-name='" + content_args.blog_name + "'><h1 class='snippet'>" +
+                snip_text(content_args.body) + "</h1></div>";
+        default:
+            return "";
+    }
+}
+
 var processPhoto = function(photo, blog_name, timestamp) {
     var alt = getOptimalPhoto(photo.alt_sizes);
     var url = alt.url;
@@ -76,7 +78,7 @@ var processPhoto = function(photo, blog_name, timestamp) {
 
     // header div element
     var html = "<div class='post photo' data-category='photo' data-timestamp='" +
-        timestamp + "'>";
+        timestamp + "' data-name='" + blog_name + "'>";
 
     // div element that contains the picture
     html += "<div class='pic ic_container' style='height: " + height + "px;" + 
