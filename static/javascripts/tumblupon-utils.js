@@ -39,6 +39,26 @@ var render_entry = function(content_args) {
             return "<div class='post' style='display:hidden'></div>";
     }
 }
+var process_full_post = function(post) {
+  var blog_name = post.blog_name;
+  var caption = post.caption;
+  var timestamp = post.timestamp;
+  var note_count = post.note_count;
+  var photos = post.photos;
+  var tags = post.tags;
+  var text = "<div id='mosaic'>";
+  text += "<div class='blogname'>"+blog_name+"</div>";
+  text += "<div class='note'>"+note_count+"</div>";
+  text += "<div class='date'>"+make_datestamp(timestamp)+"</div>";
+  for (i in tags) {
+    text += "<div class='tag'>"+tags[i]+"</div>";
+  }
+  for (j in photos) {
+    text += "<div class='pic'><img src='"+photos[j].alt_sizes[0].url+"'/>";
+  }
+  text += "</div>";
+  return text;
+}
 
 var processPhoto = function(photo, blog_name, timestamp) {
     var alt = getOptimalPhoto(photo.alt_sizes);
@@ -114,23 +134,15 @@ var populate = function (offset) {
       }   
 
       console.log(post);
-      var text = "<div id='mosaic'>" +
-                    "<div>Testing1</div>" +
-                    "<div>Testing2</div>" +
-                    "<div>Testing3</div>" +
-                  "</div>";
+      var text = process_full_post(post);
       $post.click(function() {
-        $('.dialog #content').html('HELLO THERE');
+        $('.dialog #content').html(text);
         //$('.dialog').css('visibility','visible');
-        if ($('.dialog').is(':visible')) {
-          $('.dialog').show();
-        } else {
-          $('.dialog').hide();
-        }   
+        $('.dialog').fadeIn();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       }); 
-    }); 
+    });
     setTimeout(function () { scrollLimit += 1; }, 5000);
   });
 

@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('.dialog').hide().click(function() {
-      $(this).slideToggle();
+      $(this).fadeOut();
   });
   var $container = $("#container");
 
@@ -36,5 +36,4 @@ $(document).ready(function() {
   });
   populate(0);
   // setInterval("scroll();", 1000);
-
 });
