@@ -26,8 +26,6 @@ var UTILS = {
  * simple text if type="text".
  */
 var render_entry = function(content_args) {
-    // var str = ""; //"<a href='" + content_args.post_url + "'>";
-    //var str += "<div class='post " + content_args.type + "'>";
     switch (content_args.type) {
         case "photo":
             return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
@@ -40,12 +38,6 @@ var render_entry = function(content_args) {
         default:
             return "<div class='post' style='display:hidden'></div>";
     }
-    //str += "\t<h2 class='blog-name'>" + content_args.blog_name + "</h2>\n";
-    //str += "\t<h2 class='blog-name'>" + content_args.blog_name + "</h2>\n";
-    //str += "\t<p class='datestamp'>" + make_datestamp(content_args.timestamp) + "</p>\n";
-    //str += "</a>\n";
-    //str += "</div>\n"
-
 }
 var process_full_post = function(post) {
   var blog_name = post.blog_name;
@@ -71,33 +63,34 @@ var process_full_post = function(post) {
 }
 
 var processPhoto = function(photo, blog_name, timestamp) {
-  var alt = getOptimalPhoto(photo.alt_sizes);
-  var url = alt.url;
-  var height = alt.height;
-  var width = alt.width;
-  console.log(height + ', ' + width);
+    var alt = getOptimalPhoto(photo.alt_sizes);
+    var url = alt.url;
+    var height = alt.height;
+    var width = alt.width;
+    console.log(height + ', ' + width);
 
-  /*var html = "<div class='post photo ic_container' " + 
-        "data-category='photo' data-timestamp='" + timestamp + "'>";
-  
-  html += "<img class='pic' style='height:" + height + "px; width:" + width + " px;' " +
-      "src='" + url + "' />";
-  html += "<div class='overlay' style='display:none;'></div>";
-  html += "<div class='ic_caption'>";
-  html += "<p class='ic_text'>from: " + blog_name + "</p>";
-  html += "</div>";
-  
-  html += "</div>";
-  return html;*/
-  return "<div class='post photo' data-category='photo' data-timestamp='" + timestamp + "'>" +
-          "<div class='pic ic_container' style='height: " + height + "px;" + 
+    // header div element
+    var html = "<div class='post photo' data-category='photo' data-timestamp='" +
+        timestamp + "'>";
+
+    // div element that contains the picture
+    html += "<div class='pic ic_container' style='height: " + height + "px;" + 
           "width: " + width + "px;" +
-          "background:url(" + url + ") no-repeat center center'>" +
-          "<div class='overlay' style='display:none;'></div>" +
-          "<div class='ic_caption'>" +
+          "background:url(" + url + ") no-repeat center center'>";
+
+    // div for the captioning overlay
+    html += "<div class='overlay' style='display:none;'></div>";
+
+    // captioning content
+    html += "<div class='ic_caption'>" +
           "<h3>from: &nbsp;&nbsp;" + blog_name + "</h3>" +
           "<p class='ic_text'>" + make_datestamp(timestamp) + "</p>" +
-          "</div></div></div>";
+          "</div>";
+
+    // close remaining tags
+    html += "</div></div>";
+
+    return html;
 }
 
 var getOptimalPhoto = function(alt_sizes) {
@@ -141,23 +134,15 @@ var populate = function (offset) {
               showcaption: true
           }); 
       }   
-      var text = "<div id='mosaic'>" +
-                    "<div>Testing1</div>" +
-                    "<div>Testing2</div>" +
-                    "<div>Testing3</div>" +
-                  "</div>";
+      var text = process_full_post(post);
       $post.click(function() {
-        $('.dialog #content').html('HELLO THERE');
+        $('.dialog #content').html(text);
         //$('.dialog').css('visibility','visible');
-        if ($('.dialog').is(':visible')) {
-          $('.dialog').show();
-        } else {
-          $('.dialog').hide();
-        }   
+        $('.dialog').fadeIn();
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       }); 
-    }); 
+    });
     setTimeout(function () { scrollLimit += 1; }, 5000);
   });
 
