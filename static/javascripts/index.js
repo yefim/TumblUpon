@@ -44,9 +44,9 @@ $(document).ready(function() {
       //$('#container').append(render_entry(post));
       console.log(post);
       $post.click(function() {
-        $('.')
+        $('.dialog').css('visibility','visible');
         var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
-        window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
+        //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       });
     });
   });
