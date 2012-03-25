@@ -22,7 +22,8 @@ function render_entry (content_args) {
     str += "<div class='post " + content_args.type + "'>\n";
     switch (content_args.type) {
         case "photo":
-            str += "\t<img src='" + content_args.photos[0].original_size.url + "'/>\n";
+            var photo = content_args.photos[0];
+            str += "\t<img src='" + photo.alt_sizes[photo.alt_sizes.length - 3].url + "'/>\n";
             break;
         case "text":
             str += "\t<h1 class='snippet'>" + snip_text(content_args.body) +
