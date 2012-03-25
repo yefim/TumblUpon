@@ -5,7 +5,7 @@ $(document).ready(function() {
   }).done(function(response) {
     response = $.parseJSON(response);
     $.each(response, function(index, post) {
-      processPost(index, post);
+      $('#container').append(render_entry(post));
       console.log(response);
     });
     $("#container").isotope({
@@ -13,8 +13,4 @@ $(document).ready(function() {
       layoutMode : 'fitRows'
     });
   });
-  var processPost = function(index, post) {
-    var url = post.post_url;
-    $('#container').append('<div class="post"><a href="'+url+'">'+url+'</a></div>');
-  }
 });
