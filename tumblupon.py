@@ -131,6 +131,9 @@ def user_create(username, email, password):
     #    g.db.execute('''insert into tag (
     #        tag, user_id) values (?, ?)''',
     #        [tag, user_id])
+    g.db.execute('''insert into tag (
+            tag, user_id) values (?, ?)''',
+            ['cats', user_id])
     g.db.commit()
 
 
