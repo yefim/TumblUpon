@@ -25,6 +25,11 @@ body {
 #footer {
   margin-bottom: 20px;
 }
+.navigation {
+  position: absolute;
+  top: 20px;
+  left: 75%;
+}
 #wrapper {
   width: 90%;
   margin: 0 auto;

@@ -1,16 +1,16 @@
 <div id='header'>
     <a id="logo" href="{{ url_for('index') }}"></a>
     <div id='sort-by'>
-      <a href='#newest' class='selected'>Newest</a>
-      <a href='#oldest'>Oldest</a>
+      <button href='#newest' class='selected btn btn-large'>Newest</button>
+      <button href='#oldest' class='btn btn-large'>Oldest</button>
     </div>
     <div class=navigation>
       {% if g.user %}
-        <a href="{{ url_for('logout') }}">sign out [{{ g.user.username }}]</a>
-        <a href="{{ url_for('settings') }}">Settings</a>
+        <button class='btn' onclick="{{ url_for('logout') }}">logout [{{ g.user.username }}]</button>
+        <button class='btn' href="{{ url_for('settings') }}">Settings</button>
       {% else %}
-        <a href="{{ url_for('register') }}">Register</a>
-        <a href="{{ url_for('login') }}">Sign in</a>
+        <button class='btn' href="{{ url_for('register') }}">Register</button>
+        <button class='btn' href="{{ url_for('login') }}">Login</button>
       {% endif %}
   </div>
 </div>
