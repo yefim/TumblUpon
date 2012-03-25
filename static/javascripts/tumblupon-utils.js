@@ -32,7 +32,7 @@ var render_entry = function(content_args) {
                             content_args.blog_name,
                             content_args.timestamp);
     } else {
-        return null;
+        return "";
     }
     /*
     switch (content_args.type) {
@@ -161,7 +161,7 @@ var populate = function (offset) {
       var post = response[index];
       var entry = render_entry(post);
       if (entry == null) continue;
-      $post = $(entry);
+      var $post = $(entry);
       
       $container.isotope('insert', $post);
           

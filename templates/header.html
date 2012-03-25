@@ -8,6 +8,9 @@
         <button href='#ascend' class='selected btn btn-large'>Ascending</button>
         <button href='#descend' class='btn btn-large'>Descending</button>
     </div>
+
+    <button id='refresh' class='btn btn-large'>Refresh</button>
+
     <div class=navigation>
       {% if g.user %}
         <a class='btn' onclick="{{ url_for('logout') }}">logout [{{ g.user.username }}]</a>

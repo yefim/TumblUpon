@@ -30,7 +30,7 @@ $(document).ready(function() {
     sortAscending : false
   });
 
-  $("#sort-by a").click(function(e) {
+  $("#sort-by button").click(function(e) {
       var sortName = $(this).attr('href').slice(1);
       $container.isotope({ sortBy : sortName });;
 
@@ -47,6 +47,14 @@ $(document).ready(function() {
           $container.isotope({ sortAscending : false });
       }
 
+      e.preventDefault();
+      return true;
+  });
+
+
+  $("#refresh").click(function(e) {
+      $container.isotope('remove', $container.children());
+      setTimeout(populate, 500, 0);
       e.preventDefault();
       return true;
   });
