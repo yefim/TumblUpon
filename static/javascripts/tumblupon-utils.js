@@ -133,7 +133,7 @@ var snip_text = function(string) {
 }
 
 var make_datestamp = function(timestamp) {
-    var d = new Date(timestamp);
+    var d = new Date(timestamp * 1000);
     return UTILS.months[d.getMonth()] + " " + d.getDate();
 }
 
@@ -149,7 +149,6 @@ var populate = function (offset) {
       $container.isotope('insert', $post);
           
       if ($post.hasClass('photo')) {
-          console.log("has photo");
           $post.capslide({
               caption_color: '#fff',
               caption_bgcolor: '#000',

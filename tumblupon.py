@@ -1,6 +1,7 @@
 from __future__ import with_statement
 import sqlite3
 import json
+from contextlib import closing
 
 from flask import Flask, request, session, g, redirect, url_for, \
              abort, render_template, flash
@@ -120,6 +121,18 @@ def logout():
     return redirect(url_for('index'))
 
 
+def user_create(username, email, password):
+    g.db.execute('''insert into user (
+        username, email, pw_hash) values (?, ?, ?)''',
+        [username, email, generate_password_hash(password)])
+    user_id = get_user_id(username)
+    for tag in POPULAR:
+        g.db.execute('''insert into tag (
+            tag, user_id) values (?, ?)''',
+            [tag, user_id])
+    g.db.commit()
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Registers the user."""
@@ -139,14 +152,60 @@ def register():
         elif get_user_id(request.form['username']) is not None:
             error = 'The username is already taken'
         else:
-            g.db.execute('''insert into user (
-                username, email, pw_hash) values (?, ?, ?)''',
-                [request.form['username'], request.form['email'],
-                 generate_password_hash(request.form['password'])])
-            g.db.commit()
+            user_create(request.form['username'], request.form['email'], request.form['password'])
             flash('You were successfully registered and can login now')
             return redirect(url_for('login'))
     return render_template('register.html', error=error)
+
+
+# User Resource
+
+
+@app.route('/tag/create/<tag>/', methods=['GET'])
+def create_tag(tag):
+    if g.user:
+        user_id = session['user_id']
+        if tag not in get_user_tags(user_id):
+            g.db.execute('''insert into tag (
+                tag, user_id) values (?, ?)''',
+                [tag, user_id])
+            g.db.commit()
+            flash("Added tag: %s" % tag)
+    return redirect(url_for('index'))
+
+def get_user_tags(user_id):
+    for tag in g.db.execute('select tag from tag where user_id=?', [user_id]):
+        yield tag[0]
+
+@app.route('/tags/', methods=['GET'])
+def tags():
+    if g.user:
+        user_id = session['user_id']
+        return json.dumps(list(get_user_tags(user_id)))
+    return redirect(url_for('index'))
+
+
+@app.route('/tag/destroy/<tag>/', methods=['GET'])
+def delete_tag(tag):
+    if g.user:
+        user_id = session['user_id']
+        tags = get_user_tags(user_id)
+        if tag in tags:
+            g.db.execute('''delete from tag where tag=? and user_id=?''',
+                [tag, user_id])
+            g.db.commit()
+            flash("Deleted tag: %s" % tag)
+    return redirect(url_for('index'))
+
+
+@app.route('/settings/', methods=['GET', 'POST'])
+def settings():
+    if not g.user:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        return render_template('settings.html')
+    elif request.method == 'GET':
+        return render_template('settings.html', tags=tags)
 
 
 # API
@@ -170,16 +229,32 @@ POPULAR = ['funny', 'LOL']
 
 @app.route('/api/v1/popular/')
 def popular():
-    responses = []
-    try:
-        offset = request.args.get('offset', '')
-    except KeyError:
-        offset = 0
-    def get_data(tag):
-        return get_tumblr_tag(tag, offset=offset)
-    for response in thread_map(get_data, POPULAR):
-        responses.extend(response)
-    return json.dumps(responses)
+    if g.user:
+        responses = []
+        try:
+            offset = request.args.get('offset', '')
+        except KeyError:
+            offset = 0
+        def get_data(tag):
+            return get_tumblr_tag(tag, offset=offset)
+
+        user_id = session['user_id']
+        tags = get_user_tags(user_id)
+        if tags:
+            for response in thread_map(get_data, tags):
+                responses.extend(response)
+        return json.dumps(responses)
+    else:
+        responses = []
+        try:
+            offset = request.args.get('offset', '')
+        except KeyError:
+            offset = 0
+        def get_data(tag):
+            return get_tumblr_tag(tag, offset=offset)
+        for response in thread_map(get_data, POPULAR):
+            responses.extend(response)
+        return json.dumps(responses)
 
 
 if __name__ == '__main__':
