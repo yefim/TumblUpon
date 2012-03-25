@@ -16,7 +16,7 @@
         response = $.parseJSON(response);
         console.log(response);
         $.each(response, function(index, post) {
-          var entry = render_entry(post, tag);
+          var entry = render_entry(post);
           if (entry == null)
             return true;
           var $post = $(entry);
