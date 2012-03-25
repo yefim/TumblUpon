@@ -231,7 +231,7 @@ def tagify(d, tag):
     return d
 
 
-POPULAR = ['funny', 'LOL']
+POPULAR = ['LOL', 'fashion', 'vintage', 'landscape', 'animals', 'illustration', 'gaming', 'art', 'makeup', 'film', 'tattoos', 'typography', 'food', 'crafts']
 
 
 @app.route('/api/v1/popular/')
