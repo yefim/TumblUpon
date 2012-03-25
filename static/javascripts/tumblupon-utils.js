@@ -27,6 +27,14 @@ var UTILS = {
  * simple text if type="text".
  */
 var render_entry = function(content_args) {
+    if (content_args.type === "photo") {
+        return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
+                            content_args.blog_name,
+                            content_args.timestamp);
+    } else {
+        return null;
+    }
+    /*
     switch (content_args.type) {
         case "photo":
             return processPhoto(content_args.photos[UTILS.PHOTO_INDEX],
@@ -39,6 +47,7 @@ var render_entry = function(content_args) {
         default:
             return "<div class='post' style='display:hidden'></div>";
     }
+    */
 }
 var process_full_post = function(post) {
   var blog_name = post.blog_name;
@@ -148,8 +157,12 @@ var populate = function (offset) {
     url:'/api/v1/popular/?offset=' + 20 * offset
   }).done(function(response) {
     response = $.parseJSON(response);
-    $.each(response, function(index, post) {
-      $post = $(render_entry(post));
+    for(index in response) {
+      var post = response[index];
+      var entry = render_entry(post);
+      if (entry == null) continue;
+      $post = $(entry);
+      
       $container.isotope('insert', $post);
           
       if ($post.hasClass('photo')) {
@@ -163,7 +176,7 @@ var populate = function (offset) {
       }   
       $post.click(function() {
         var text = process_full_post(post);
-        console.log('clicked');
+        //console.log('clicked');
         $('.dialog #content').html(text);
         $('.dialog').css('top',$('.dialog').offset().top);
         //var l = $(document).width()/2 - $(text).width()/2;
@@ -173,7 +186,7 @@ var populate = function (offset) {
         //var link_url = post.post_url.match("http://(.*)\/post\/.*")[1];
         //window.location = '/api/v1/blog/' + link_url + '/post/' + post.id;
       }); 
-    });
+    }
     setTimeout(function () { scrollLimit += 1; }, 5000);
   });
 
