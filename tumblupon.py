@@ -154,8 +154,8 @@ def register():
             error = 'The username is already taken'
         else:
             user_create(request.form['username'], request.form['email'], request.form['password'])
-            flash('You were successfully registered and can login now')
-            return redirect(url_for('login'))
+            authenticate(request.form['username'], request.form['password'])
+            return redirect(url_for('settings'))
     return render_template('register.html', error=error)
 
 
@@ -201,7 +201,7 @@ def delete_tag(tag):
     return redirect(url_for('index'))
 
 
-@app.route('/settings/', methods=['GET'])
+@app.route('/dashboard/', methods=['GET'])
 def settings():
     if not g.user:
         return redirect(url_for('index'))
