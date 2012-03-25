@@ -1,6 +1,7 @@
 from __future__ import with_statement
 import sqlite3
 import json
+from contextlib import closing
 
 from flask import Flask, request, session, g, redirect, url_for, \
              abort, render_template, flash
@@ -120,6 +121,38 @@ def logout():
     return redirect(url_for('index'))
 
 
+def user_create(username, email, password):
+    g.db.execute('''insert into user (
+        username, email, pw_hash) values (?, ?, ?)''',
+        [username, email, generate_password_hash(password)])
+    user_id = get_user_id(username)
+    for tag in POPULAR:
+        g.db.execute('''insert into tag (
+            tag, user_id) values (?, ?)''',
+            [tag, user_id])
+    g.db.commit()
+
+
+@app.route('/mytags/')
+def mytags():
+    if g.user:
+        responses = []
+        try:
+            offset = request.args.get('offset', '')
+        except KeyError:
+            offset = 0
+        def get_data(tag):
+            return get_tumblr_tag(tag, offset=offset)
+
+        user_id = session['user_id']
+        tags = g.db.execute('select tag from tag where user_id = ?',
+                           [user_id]).fetchone()
+        if tags:
+            for response in thread_map(get_data, tags):
+                responses.extend(response)
+        return json.dumps(responses)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Registers the user."""
@@ -139,14 +172,23 @@ def register():
         elif get_user_id(request.form['username']) is not None:
             error = 'The username is already taken'
         else:
-            g.db.execute('''insert into user (
-                username, email, pw_hash) values (?, ?, ?)''',
-                [request.form['username'], request.form['email'],
-                 generate_password_hash(request.form['password'])])
-            g.db.commit()
+            user_create(request.form['username'], request.form['email'], request.form['password'])
             flash('You were successfully registered and can login now')
             return redirect(url_for('login'))
     return render_template('register.html', error=error)
+
+
+# User Resource
+
+
+@app.route('/settings/', methods=['GET', 'POST'])
+def settings():
+    if not g.user:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        return render_template('settings.html')
+    elif request.method == 'GET':
+        return render_template('settings.html', tags=tags)
 
 
 # API
