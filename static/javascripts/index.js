@@ -11,6 +11,7 @@ $(document).ready(function() {
     $.each(response, function(index, post) {
       $post = $(render_entry(post));
       $('#container').isotope('insert', $post);
+      $post.mosaic();
       //$('#container').append(render_entry(post));
       console.log(post);
     });
