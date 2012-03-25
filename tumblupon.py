@@ -186,6 +186,12 @@ def tags():
     return redirect(url_for('index'))
 
 
+def tagify(d, tag):
+    """Add a tag to a dict"""
+    d['tag'] = tag
+    return d
+
+
 @app.route('/tag/destroy/<tag>/', methods=['GET'])
 def delete_tag(tag):
     if g.user:
