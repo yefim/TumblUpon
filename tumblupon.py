@@ -80,6 +80,17 @@ def get_tumblr_tag(tag):
     return api(TUMBLR, 'tagged', api_key=API_KEY, tag=tag)['response']
 
 
+# API
+
+
+@app.route('/api/v1/blog/<host_name>/post/<post_id>/')
+def post(host_name, post_id):
+    response = api(TUMBLR, 'blog', host_name, 'posts', id=post_id, api_key=API_KEY)['response']
+    blog = response['blog']
+    post = response['posts'][0]
+    return render_template('post.html', post=post, blog=blog)
+
+
 @app.route('/api/v1/tags/<tag>/')
 def tag(tag):
     return json.dumps(get_tumblr_tag(tag))
