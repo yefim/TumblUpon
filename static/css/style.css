@@ -7,6 +7,9 @@ body {
   padding-bottom: 60px;
   /* margin-top: 200px; */
 }
+#main {
+  margin: 0px auto;
+}
 #logo {
   cursor: pointer;
   background-image: url(/static/img/logo.png);
