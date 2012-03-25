@@ -83,7 +83,6 @@ $(document).ready(function() {
             url:'/api/v1/tags/'+tag
           }).done(function(response) {
             response = $.parseJSON(response);
-            console.log(response);
             $.each(response, function(index, post) {
               var entry = render_entry(post, tag);
               if (entry == null)
