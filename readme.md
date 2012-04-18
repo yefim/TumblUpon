@@ -1,3 +1,9 @@
-###Isotope for Tumblr
+###Basic Info
 
-Recommended for Tumblr posts.
+Tumblr image aggregator. Aggregates images based on selected tags.
+
+###Setup
+
+* Run "./init_db" to initialize the database.
+* Run "python tumblupon.py" to start the server.
+* Visit [localhost:5000](localhost:5000) to view.
