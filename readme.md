@@ -1,7 +1,8 @@
 ###Basic Info
 
 Tumblr image aggregator. Aggregates images based on selected tags.
-Written by (Ceasar)[https://github.com/Ceasar], (Dan)[https://github.com/DanGe42], and (Geoff)[https://github.com/yefim323] at HackNY 2012
+
+Written by [Ceasar](https://github.com/Ceasar), [Dan](https://github.com/DanGe42), and [Geoff](https://github.com/yefim323) at HackNY 2012
 
 ###Setup
 
