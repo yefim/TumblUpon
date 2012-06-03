@@ -1,7 +1,5 @@
 from __future__ import with_statement
-import sqlite3
 import os
-#import psycopg2
 import json
 from contextlib import closing
 
@@ -14,7 +12,6 @@ from utils import api, thread_map
 
 
 #configuration
-DATABASE = '/tmp/flaskr.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
