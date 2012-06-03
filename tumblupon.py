@@ -74,10 +74,6 @@ def teardown_request(exception):
 def index():
     return render_template('index.html')
 
-@app.route('/test01')
-def test01():
-    return render_template('test01.html')
-
 def get_tumblr_tag(tag, offset=0):
     return api(TUMBLR, 'tagged', offset=offset, api_key=API_KEY, tag=tag)['response']
 
@@ -238,7 +234,7 @@ def tagify(d, tag):
 
 #POPULAR = ['LOL', 'fashion', 'vintage', 'landscape', 'animals', 'illustration', 'gaming', 'art', 'makeup', 'film', 'tattoos', 'typography', 'food', 'crafts']
 
-POPULAR = ['LOL', 'fashion', 'landscape', 'animals', 'illustration', 'gaming', 'film', 'tattoos', 'typography', 'food']
+POPULAR = ['fashion', 'landscape', 'animals']
 
 @app.route('/api/v1/popular/')
 def popular():
