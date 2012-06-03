@@ -1,11 +1,13 @@
 from __future__ import with_statement
 import sqlite3
+import os
 #import psycopg2
 import json
 from contextlib import closing
 
 from flask import Flask, request, session, g, redirect, url_for, \
              abort, render_template, flash
+from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug import check_password_hash, generate_password_hash
 
 from utils import api, thread_map
@@ -23,13 +25,32 @@ API_KEY = 'wnsr7xgJJz7Dpjcm0S9YNWe1UbJHc4oGwVYUhtvkykcPK678rA'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/tumblupon.db')
+db = SQLAlchemy(app)
+
+# Models
+
+class User(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100))
+    pw_hash = db.Column(db.String(160))
+
+    def __init__(self, username, pw_hash):
+        self.username = username
+        self.pw_hash = pw_hash
+
+class Tag(db.Model):
+    tag_id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(100))
+    user_id = db.Column(db.Integer)
+
+    def __init__(self, tag, user_id):
+        self.tag = tag
+        self.user_id = user_id
 
 
 # Database functions
 
-def connect_db():
-    """Connect to the database."""
-    return sqlite3.connect(app.config['DATABASE'])
 
 
 def query_db(query, args=(), one=False):
@@ -47,28 +68,16 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
-
 def get_user_id(username):
     """Convenience method to look up the id for a username."""
-    rv = g.db.execute('select user_id from user where username = ?',
-                       [username]).fetchone()
-    return rv[0] if rv else None
-
+    user = User.query.filter_by(username=username).first()
+    return user.user_id if user else None
 
 @app.before_request
 def before_request():
-    g.db = connect_db()
     g.user = None
     if 'user_id' in session:
-        g.user = query_db('select * from user where user_id = ?',
-                          [session['user_id']], one=True)
-
-
-@app.teardown_request
-def teardown_request(exception):
-    if hasattr(g, 'db'):
-        g.db.close()
-
+        g.user = User.query.filter_by(user_id=session['user_id']).first()
 
 @app.route('/')
 def index():
@@ -81,18 +90,13 @@ def get_tumblr_tag(tag, offset=0):
 
 def authenticate(username, password):
     """Attempt to log the user in. Raises a ValueError on bad credentials."""
-    users = query_db('select * from user')
-    for user in users:
-        if user['username'] == username:
-            if check_password_hash(generate_password_hash(password), password):
-                session['user_id'] = user['user_id']
-                break
-            else:
-                print "bad password"
-                raise ValueError('Invalid password')
-    else:
+    user = User.query.filter_by(username=username).first()
+    if not user:
         raise ValueError('Invalid username')
-
+    if check_password_hash(user.pw_hash, password):
+        session['user_id'] = user.user_id
+    else:
+        raise ValueError('Invalid password')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -119,18 +123,12 @@ def logout():
 
 
 def user_create(username, password):
-    g.db.execute('''insert into user (
-        username,  pw_hash) values (?, ?)''',
-        [username, generate_password_hash(password)])
-    user_id = get_user_id(username)
-    # for tag in POPULAR:
-    #    g.db.execute('''insert into tag (
-    #        tag, user_id) values (?, ?)''',
-    #        [tag, user_id])
-    g.db.execute('''insert into tag (
-            tag, user_id) values (?, ?)''',
-            ['cats', user_id])
-    g.db.commit()
+    user = User(username, generate_password_hash(password))
+    db.session.add(user)
+    db.session.commit() # only after commiting do you have user.user_id
+    first_tag = Tag('cats', user.user_id)
+    db.session.add(first_tag)
+    db.session.commit()
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -163,16 +161,15 @@ def create_tag(tag):
     if g.user:
         user_id = session['user_id']
         if tag not in get_user_tags(user_id):
-            g.db.execute('''insert into tag (
-                tag, user_id) values (?, ?)''',
-                [tag, user_id])
-            g.db.commit()
+            t = Tag(tag, user_id)
+            db.session.add(t)
+            db.session.commit()
             flash("Added tag: %s" % tag)
     return redirect(url_for('index'))
 
 def get_user_tags(user_id):
-    for tag in g.db.execute('select tag from tag where user_id=?', [user_id]):
-        yield tag[0]
+    for t in Tag.query.filter_by(user_id=user_id).all():
+        yield t.tag
 
 @app.route('/tags/', methods=['GET'])
 def tags():
@@ -188,11 +185,10 @@ def tags():
 def delete_tag(tag):
     if g.user:
         user_id = session['user_id']
-        tags = get_user_tags(user_id)
-        if tag in tags:
-            g.db.execute('''delete from tag where tag=? and user_id=?''',
-                [tag, user_id])
-            g.db.commit()
+        tag_to_delete = Tag.query.filter_by(tag=tag, user_id=user_id).first()
+        if tag_to_delete:
+            db.session.delete(tag_to_delete)
+            db.session.commit()
             flash("Deleted tag: %s" % tag)
     return redirect(url_for('index'))
 
@@ -269,4 +265,6 @@ def popular():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    db.create_all()
+    port = int(os.environ.get('PORT',5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
